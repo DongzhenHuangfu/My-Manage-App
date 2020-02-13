@@ -273,6 +273,9 @@
             <pointsize>12</pointsize>
            </font>
           </property>
+          <property name="value">
+           <number>6</number>
+          </property>
          </widget>
         </item>
        </layout>

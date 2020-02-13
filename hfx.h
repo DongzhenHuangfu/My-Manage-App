@@ -1,6 +1,8 @@
 #ifndef HFX_H
 #define HFX_H
 
+#pragma execution_character_set("utf-8")
+
 #include <QMainWindow>
 #include <vector>
 #include <string>
@@ -16,6 +18,9 @@ class HFX : public QMainWindow
 public:
     HFX(QWidget *parent = nullptr);
     ~HFX();
+
+private slots:
+    void on_ComboType_currentIndexChanged(const QString &TypeName);
 
 private:
     Ui::HFX *ui;
