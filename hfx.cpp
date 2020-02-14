@@ -6,6 +6,7 @@ HFX::HFX(QWidget *parent)
     , ui(new Ui::HFX)
 {
     ui->setupUi(this);
+    update();
 }
 
 HFX::~HFX()
@@ -49,4 +50,39 @@ void HFX::on_ComboType_currentIndexChanged(const QString &TypeName)
     {
         ui->SpinPrice->setValue(9);
     }
+}
+
+void HFX::update()
+{
+    /// 读取表格信息
+    NewSheet.Name = ui->LineName->text().toStdString();
+    NewSheet.Date = ui->SpinDate->text().toInt();
+    NewSheet.Deal = ui->SpinDeal->text().toInt();
+    NewSheet.Post = ui->SpinPost->text().toFloat();
+    NewSheet.Type = ui->ComboType->currentText().toStdString();
+    NewSheet.Amount = ui->SpinAmount->text().toInt();
+    NewSheet.Price = ui->SpinPrice->text().toFloat();
+
+    NewSheet.Total = (NewSheet.Amount - NewSheet.Deal) * NewSheet.Price + NewSheet.Post;
+    ui->LineTotal->setText(QString("%1").arg(NewSheet.Total));
+}
+
+void HFX::on_SpinPrice_valueChanged(int Price)
+{
+    update();
+}
+
+void HFX::on_SpinAmount_valueChanged(int Amount)
+{
+    update();
+}
+
+void HFX::on_SpinDeal_valueChanged(int Deal)
+{
+    update();
+}
+
+void HFX::on_SpinPost_valueChanged(int Post)
+{
+    update();
 }

@@ -6,25 +6,12 @@
 #include <QMainWindow>
 #include <vector>
 #include <string>
+#include <iostream>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class HFX; }
 QT_END_NAMESPACE
 
-class HFX : public QMainWindow
-{
-    Q_OBJECT
-
-public:
-    HFX(QWidget *parent = nullptr);
-    ~HFX();
-
-private slots:
-    void on_ComboType_currentIndexChanged(const QString &TypeName);
-
-private:
-    Ui::HFX *ui;
-};
 
 /// 保存账单信息的结构
 ///   Name: 购买人名字
@@ -39,7 +26,35 @@ typedef struct
 {
     std::string Name, Type;
     int Date, Amount, Deal;
-    float Price, Post, Total;
+    float Price, Post;
+    long Total;
 }Sheet;
 
+class HFX : public QMainWindow
+{
+    Q_OBJECT
+
+public:
+    HFX(QWidget *parent = nullptr);
+    ~HFX();
+
+    /// 按照表格更新数据，计算总价数额
+    void update();
+
+private slots:
+    void on_ComboType_currentIndexChanged(const QString &TypeName);
+
+    void on_SpinPrice_valueChanged(int Price);
+
+    void on_SpinAmount_valueChanged(int Amount);
+
+    void on_SpinDeal_valueChanged(int Deal);
+
+    void on_SpinPost_valueChanged(int Post);
+
+private:
+    Ui::HFX *ui;
+    /// 实时的表单数据
+    Sheet NewSheet;
+};
 #endif // HFX_H
