@@ -1,5 +1,6 @@
 #include "hfx.h"
 #include "ui_hfx.h"
+#include "Python.h"
 
 HFX::HFX(QWidget *parent)
     : QMainWindow(parent)
@@ -65,24 +66,42 @@ void HFX::update()
 
     NewSheet.Total = (NewSheet.Amount - NewSheet.Deal) * NewSheet.Price + NewSheet.Post;
     ui->LineTotal->setText(QString("%1").arg(NewSheet.Total));
+
+    /// 数据有变化后提交按钮的字体颜色变红
+    ui->PushButtonSubmit->setStyleSheet("color:red");
 }
 
-void HFX::on_SpinPrice_valueChanged(int Price)
+void HFX::on_SpinPrice_valueChanged()
 {
     update();
 }
 
-void HFX::on_SpinAmount_valueChanged(int Amount)
+void HFX::on_SpinAmount_valueChanged()
 {
     update();
 }
 
-void HFX::on_SpinDeal_valueChanged(int Deal)
+void HFX::on_SpinDeal_valueChanged()
 {
     update();
 }
 
-void HFX::on_SpinPost_valueChanged(int Post)
+void HFX::on_SpinPost_valueChanged()
 {
     update();
+}
+
+
+void HFX::on_PushButtonSubmit_clicked()
+{
+    Py_Initialize();
+    if (!Py_IsInitialized())
+    {
+        ui->PushButtonSubmit->setStyleSheet("color:blue");
+    }
+    else
+    {
+        ui->PushButtonSubmit->setStyleSheet("color:green");
+    }
+    Py_Finalize();
 }

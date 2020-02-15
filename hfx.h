@@ -1,7 +1,7 @@
 #ifndef HFX_H
 #define HFX_H
 
-#pragma execution_character_set("utf-8")
+// #pragma execution_character_set("utf-8")
 
 #include <QMainWindow>
 #include <vector>
@@ -44,13 +44,15 @@ public:
 private slots:
     void on_ComboType_currentIndexChanged(const QString &TypeName);
 
-    void on_SpinPrice_valueChanged(int Price);
+    void on_SpinPrice_valueChanged();
 
-    void on_SpinAmount_valueChanged(int Amount);
+    void on_SpinAmount_valueChanged();
 
-    void on_SpinDeal_valueChanged(int Deal);
+    void on_SpinDeal_valueChanged();
 
-    void on_SpinPost_valueChanged(int Post);
+    void on_SpinPost_valueChanged();
+
+    void on_PushButtonSubmit_clicked();
 
 private:
     Ui::HFX *ui;

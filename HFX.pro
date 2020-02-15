@@ -29,3 +29,6 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+INCLUDEPATH += C:\Python38\include
+LIBS += -L C:\Python38\libs -lpython38
