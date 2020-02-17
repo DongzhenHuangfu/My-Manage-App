@@ -91,10 +91,19 @@ void HFX::on_SpinPost_valueChanged()
     update();
 }
 
-
 void HFX::on_PushButtonSubmit_clicked()
 {
+    update();
+    AllSheet.push_back(NewSheet);
+}
+
+void HFX::save_data()
+{
     Py_Initialize();
+
+    PyObject * pModule = NULL;
+    PyObject * pFunc = NULL;
+
     if (!Py_IsInitialized())
     {
         ui->PushButtonSubmit->setStyleSheet("color:blue");
@@ -103,5 +112,6 @@ void HFX::on_PushButtonSubmit_clicked()
     {
         ui->PushButtonSubmit->setStyleSheet("color:green");
     }
+
     Py_Finalize();
 }

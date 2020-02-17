@@ -40,6 +40,8 @@ public:
 
     /// 按照表格更新数据，计算总价数额
     void update();
+    /// 存下表单数据
+    void save_data();
 
 private slots:
     void on_ComboType_currentIndexChanged(const QString &TypeName);
@@ -58,5 +60,6 @@ private:
     Ui::HFX *ui;
     /// 实时的表单数据
     Sheet NewSheet;
+    std::vector<Sheet> AllSheet;
 };
 #endif // HFX_H
