@@ -40,8 +40,6 @@ public:
 
     /// 按照表格更新数据，计算总价数额
     void update();
-    /// 存下表单数据
-    void save_data();
 
 private slots:
     void on_ComboType_currentIndexChanged(const QString &TypeName);
@@ -55,6 +53,8 @@ private slots:
     void on_SpinPost_valueChanged();
 
     void on_PushButtonSubmit_clicked();
+
+    void on_pushButtonSave_clicked();
 
 private:
     Ui::HFX *ui;

@@ -97,7 +97,7 @@ void HFX::on_PushButtonSubmit_clicked()
     AllSheet.push_back(NewSheet);
 }
 
-void HFX::save_data()
+void HFX::on_pushButtonSave_clicked()
 {
     Py_Initialize();
 
