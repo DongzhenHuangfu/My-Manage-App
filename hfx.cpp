@@ -206,9 +206,9 @@ void HFX::on_PushButtonSave_clicked()
         PyList_Append(DateList, Py_BuildValue("i", AllSheet[i].Date));
         PyList_Append(AmountList, Py_BuildValue("i", AllSheet[i].Amount));
         PyList_Append(DealList, Py_BuildValue("i", AllSheet[i].Deal));
-        PyList_Append(PriceList, Py_BuildValue("i", AllSheet[i].Price));
-        PyList_Append(PostList, Py_BuildValue("i", AllSheet[i].Post));
-        PyList_Append(TotalList, Py_BuildValue("i", AllSheet[i].Total));
+        PyList_Append(PriceList, Py_BuildValue("f", AllSheet[i].Price));
+        PyList_Append(PostList, Py_BuildValue("f", AllSheet[i].Post));
+        PyList_Append(TotalList, Py_BuildValue("l", AllSheet[i].Total));
     }
 
     PyDict_SetItemString(PDict, "Name", NameList);
