@@ -51,6 +51,7 @@ void HFX::on_ComboType_currentIndexChanged(const QString &TypeName)
     {
         ui->SpinPrice->setValue(9);
     }
+    update();
 }
 
 void HFX::update()
