@@ -2,6 +2,22 @@
 #include "ui_hfx.h"
 #include "Python.h"
 
+MyMessageBox::MyMessageBox(QWidget *parent) :
+    QMessageBox(parent), width_(0), length_(0)
+{
+}
+
+void MyMessageBox::resizeEvent(QResizeEvent *event)
+{
+    setFixedSize(width_, length_);
+}
+
+void MyMessageBox::setMySize(int width, int length)
+{
+    width_ = width;
+    length_ = length;
+}
+
 bool sort_Sheet_Post(const Sheet &p1, const Sheet &p2)
 {
     return p1.Post > p2.Post;
@@ -168,7 +184,6 @@ void HFX::on_LineName_textChanged()
 {
     ui->PushButtonSubmit->setStyleSheet("color:red");
 }
-
 
 void HFX::on_PushButtonSubmit_clicked()
 {

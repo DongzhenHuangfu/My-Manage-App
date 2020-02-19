@@ -40,6 +40,21 @@ bool sort_Sheet_Amount(const Sheet &p1, const Sheet &p2);
 bool sort_Sheet_Deal(const Sheet &p1, const Sheet &p2);
 bool sort_Sheet_Post(const Sheet &p1, const Sheet &p2);
 
+class MyMessageBox : public QMessageBox
+{
+    Q_OBJECT
+public:
+    explicit MyMessageBox(QWidget *parent = 0);
+    void setMySize(int width, int length);
+signals:
+public slots:
+
+protected:
+    void resizeEvent(QResizeEvent *event);
+private:
+    int width_, length_;
+};
+
 class HFX : public QMainWindow
 {
     Q_OBJECT
