@@ -2,6 +2,73 @@
 #include "ui_hfx.h"
 #include "Python.h"
 
+bool sort_Sheet_Post(const Sheet &p1, const Sheet &p2)
+{
+    return p1.Post > p2.Post;
+}
+
+bool sort_Sheet_Deal(const Sheet &p1, const Sheet &p2)
+{
+    if (p1.Deal == p2.Deal)
+    {
+        return sort_Sheet_Post(p1, p2);
+    }
+    return p1.Deal < p2.Deal;
+}
+
+bool sort_Sheet_Amount(const Sheet &p1, const Sheet &p2)
+{
+    if (p1.Amount == p2.Amount)
+    {
+        return sort_Sheet_Deal(p1, p2);
+    }
+    return p1.Amount > p2.Amount;
+}
+
+bool sort_Sheet_Price(const Sheet &p1, const Sheet &p2)
+{
+    if(p1.Price == p2.Price)
+    {
+        return sort_Sheet_Amount(p1, p2);
+    }
+    return p1.Price > p2.Price;
+}
+
+bool sort_Sheet_Type(const Sheet &p1, const Sheet &p2)
+{
+    if (p1.Type.compare(p2.Type) == 0)
+    {
+        return sort_Sheet_Price(p1, p2);
+    }
+    else if (p1.Type.compare(p2.Type) > 0)
+    {
+        return false;
+    }
+    return true;
+}
+
+bool sort_Sheet_Name(const Sheet &p1, const Sheet &p2)
+{
+    if (p1.Name.compare(p2.Name) == 0)
+    {
+        return sort_Sheet_Type(p1, p2);
+    }
+    else if (p1.Name.compare(p2.Name) > 0)
+    {
+        return false;
+    }
+    return true;
+}
+
+bool sort_Sheet_Date(const Sheet &p1, const Sheet &p2)
+{
+    if (p1.Date == p2.Date)
+    {
+        return sort_Sheet_Name(p1, p2);
+    }
+    return p1.Date < p2.Date;
+}
+
 HFX::HFX(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::HFX)
@@ -101,6 +168,8 @@ void HFX::on_PushButtonSubmit_clicked()
 
 void HFX::on_PushButtonSave_clicked()
 {
+    // 讲数据按照日期先后排序
+    sort(AllSheet.begin(), AllSheet.end(), sort_Sheet_Date);
     // 初始化Python
     Py_SetPythonHome((const wchar_t *)(L"C:/Python38"));
     Py_Initialize();

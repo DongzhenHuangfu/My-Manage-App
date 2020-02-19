@@ -32,6 +32,14 @@ typedef struct
     long Total;
 }Sheet;
 
+bool sort_Sheet_Date(const Sheet &p1, const Sheet &p2);
+bool sort_Sheet_Name(const Sheet &p1, const Sheet &p2);
+bool sort_Sheet_Type(const Sheet &p1, const Sheet &p2);
+bool sort_Sheet_Price(const Sheet &p1, const Sheet &p2);
+bool sort_Sheet_Amount(const Sheet &p1, const Sheet &p2);
+bool sort_Sheet_Deal(const Sheet &p1, const Sheet &p2);
+bool sort_Sheet_Post(const Sheet &p1, const Sheet &p2);
+
 class HFX : public QMainWindow
 {
     Q_OBJECT

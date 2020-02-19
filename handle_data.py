@@ -1,7 +1,6 @@
 import csv
 
 def save(SavePath, SaveData):
-	print(SavePath)
 	with open(SavePath, 'w', newline='') as CSVFile:
 		writer = csv.writer(CSVFile)
 		writer.writerow(["Date", "Name", "Type", "Price", "Amount", "Deal", "Post", "Total"])
