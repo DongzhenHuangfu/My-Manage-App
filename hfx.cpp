@@ -235,8 +235,10 @@ void HFX::on_PushButtonSave_clicked()
     PyTuple_SetItem(PArgs, 1, PDict);
 
     PyEval_CallObject(PFunc, PArgs);
-    ui->PushButtonSave->setStyleSheet("color:green");
+
     Py_Finalize();
+
+    QMessageBox::information(this, "亲爱的真棒！", "保存成功！");
 }
 
 void HFX::on_PushButtonSavePath_clicked()
