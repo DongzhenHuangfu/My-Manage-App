@@ -159,6 +159,17 @@ void HFX::on_SpinPost_valueChanged()
     update();
 }
 
+void HFX::on_SpinDate_textChanged()
+{
+    ui->PushButtonSubmit->setStyleSheet("color:red");
+}
+
+void HFX::on_LineName_textChanged()
+{
+    ui->PushButtonSubmit->setStyleSheet("color:red");
+}
+
+
 void HFX::on_PushButtonSubmit_clicked()
 {
     update();

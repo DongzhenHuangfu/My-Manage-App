@@ -68,6 +68,10 @@ private slots:
 
     void on_PushButtonSavePath_clicked();
 
+    void on_SpinDate_textChanged();
+
+    void on_LineName_textChanged();
+
 private:
     Ui::HFX *ui;
     /// 实时的表单数据
