@@ -4,6 +4,8 @@
 // #pragma execution_character_set("utf-8")
 
 #include <QMainWindow>
+#include <QFileDialog>
+#include <QMessageBox>
 #include <vector>
 #include <string>
 #include <iostream>
@@ -54,7 +56,9 @@ private slots:
 
     void on_PushButtonSubmit_clicked();
 
-    void on_pushButtonSave_clicked();
+    void on_PushButtonSave_clicked();
+
+    void on_PushButtonSavePath_clicked();
 
 private:
     Ui::HFX *ui;

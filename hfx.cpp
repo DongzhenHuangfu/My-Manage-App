@@ -95,23 +95,73 @@ void HFX::on_PushButtonSubmit_clicked()
 {
     update();
     AllSheet.push_back(NewSheet);
+    ui->PushButtonSubmit->setStyleSheet("color:green");
 }
 
-void HFX::on_pushButtonSave_clicked()
+void HFX::on_PushButtonSave_clicked()
 {
+    // 初始化Python
+    Py_SetPythonHome((const wchar_t *)(L"C:/Python38"));
     Py_Initialize();
-
-    PyObject * pModule = NULL;
-    PyObject * pFunc = NULL;
 
     if (!Py_IsInitialized())
     {
-        ui->PushButtonSubmit->setStyleSheet("color:blue");
+        ui->PushButtonSave->setStyleSheet("color:blue");
+        return;
     }
-    else
+    PyObject * PModule = NULL;
+    PyObject * PFunc = NULL;
+    PModule =PyImport_ImportModule("handle_data");
+    PFunc= PyObject_GetAttrString(PModule, "save");
+
+    // 读取存储路径
+    std::string SavePath = ui->LineSavePath->text().toStdString();
+    // 将数据转换成Python的输入
+    PyObject *NameList = PyList_New(0);
+    PyObject *TypeList = PyList_New(0);
+    PyObject *DateList = PyList_New(0);
+    PyObject *AmountList = PyList_New(0);
+    PyObject *DealList = PyList_New(0);
+    PyObject *PriceList = PyList_New(0);
+    PyObject *PostList = PyList_New(0);
+    PyObject *TotalList = PyList_New(0);
+
+    PyObject *PArgs = PyTuple_New(2);
+    PyObject *PDict = PyDict_New();
+
+    for (unsigned int i = 0; i < AllSheet.size(); i++)
     {
-        ui->PushButtonSubmit->setStyleSheet("color:green");
+        PyList_Append(NameList, Py_BuildValue("s", AllSheet[i].Name.data()));
+        PyList_Append(TypeList, Py_BuildValue("s", AllSheet[i].Type.data()));
+        PyList_Append(DateList, Py_BuildValue("i", AllSheet[i].Date));
+        PyList_Append(AmountList, Py_BuildValue("i", AllSheet[i].Amount));
+        PyList_Append(DealList, Py_BuildValue("i", AllSheet[i].Deal));
+        PyList_Append(PriceList, Py_BuildValue("i", AllSheet[i].Price));
+        PyList_Append(PostList, Py_BuildValue("i", AllSheet[i].Post));
+        PyList_Append(TotalList, Py_BuildValue("i", AllSheet[i].Total));
     }
 
+    PyDict_SetItemString(PDict, "Name", NameList);
+    PyDict_SetItemString(PDict, "Type", TypeList);
+    PyDict_SetItemString(PDict, "Date", DateList);
+    PyDict_SetItemString(PDict, "Amount", AmountList);
+    PyDict_SetItemString(PDict, "Deal", DealList);
+    PyDict_SetItemString(PDict, "Price", PriceList);
+    PyDict_SetItemString(PDict, "Post", PostList);
+    PyDict_SetItemString(PDict, "Total", TotalList);
+
+    PyTuple_SetItem(PArgs, 0, Py_BuildValue("s", SavePath.data()));
+    PyTuple_SetItem(PArgs, 1, PDict);
+
+    PyEval_CallObject(PFunc, PArgs);
+    ui->PushButtonSave->setStyleSheet("color:green");
     Py_Finalize();
+}
+
+void HFX::on_PushButtonSavePath_clicked()
+{
+    QString FileName;
+    QWidget *qwidget = new QWidget();
+    FileName = QFileDialog::getSaveFileName(qwidget, "选择文件路径", "/", "CSV文件(*.csv)");
+    ui->LineSavePath->setText(FileName);
 }
