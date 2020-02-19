@@ -253,7 +253,12 @@ void HFX::on_PushButtonSave_clicked()
 
     Py_Finalize();
 
-    QMessageBox::information(this, "亲爱的真棒！", "保存成功！");
+    MyMessageBox msg;
+    msg.setWindowTitle("亲爱的辛苦了！");
+    msg.setText("保存成功！");
+    msg.setMySize(400, 180);
+    msg.addButton("好哒",QMessageBox::ActionRole);
+    msg.exec();
 }
 
 void HFX::on_PushButtonSavePath_clicked()
