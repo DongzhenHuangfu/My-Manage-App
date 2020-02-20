@@ -28,16 +28,26 @@ typedef struct
 {
     std::string Name, Type;
     int Date, Amount, Deal;
-    float Price, Post;
+    float Price, Post, Discount;
     long Total;
 }Sheet;
 
+/// 定义排序规则：
+/// 日期从小到大，
+/// 若日期一样则名字从小到大，
+/// 若名字一样则类别从小到大，
+/// 若类别一样则价格从大到小，
+/// 若价格一样则数量从大到小，
+/// 若数量一样则赠送从小到大，
+/// 若赠送一样则折扣从小到大
+/// 若折扣一样则邮费从大到小
 bool sort_Sheet_Date(const Sheet &p1, const Sheet &p2);
 bool sort_Sheet_Name(const Sheet &p1, const Sheet &p2);
 bool sort_Sheet_Type(const Sheet &p1, const Sheet &p2);
 bool sort_Sheet_Price(const Sheet &p1, const Sheet &p2);
 bool sort_Sheet_Amount(const Sheet &p1, const Sheet &p2);
 bool sort_Sheet_Deal(const Sheet &p1, const Sheet &p2);
+bool sort_Sheet_Discount(const Sheet &p1, const Sheet &p2);
 bool sort_Sheet_Post(const Sheet &p1, const Sheet &p2);
 
 class MyMessageBox : public QMessageBox
@@ -86,6 +96,8 @@ private slots:
     void on_SpinDate_textChanged();
 
     void on_LineName_textChanged();
+
+    void on_SpinDiscount_valueChanged();
 
 private:
     Ui::HFX *ui;

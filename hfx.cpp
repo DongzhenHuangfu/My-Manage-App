@@ -32,11 +32,20 @@ bool sort_Sheet_Deal(const Sheet &p1, const Sheet &p2)
     return p1.Deal < p2.Deal;
 }
 
+bool sort_Sheet_Discount(const Sheet &p1, const Sheet &p2)
+{
+    if (p1.Discount == p2.Discount)
+    {
+        return sort_Sheet_Deal(p1, p2);
+    }
+    return p1.Discount > p2.Discount;
+}
+
 bool sort_Sheet_Amount(const Sheet &p1, const Sheet &p2)
 {
     if (p1.Amount == p2.Amount)
     {
-        return sort_Sheet_Deal(p1, p2);
+        return sort_Sheet_Discount(p1, p2);
     }
     return p1.Amount > p2.Amount;
 }
@@ -147,8 +156,9 @@ void HFX::update()
     NewSheet.Type = ui->ComboType->currentText().toStdString();
     NewSheet.Amount = ui->SpinAmount->text().toInt();
     NewSheet.Price = ui->SpinPrice->text().toFloat();
+    NewSheet.Discount = ui->SpinDiscount->text().toFloat();
 
-    NewSheet.Total = (NewSheet.Amount - NewSheet.Deal) * NewSheet.Price + NewSheet.Post;
+    NewSheet.Total = (NewSheet.Amount - NewSheet.Deal) * NewSheet.Price + NewSheet.Post - NewSheet.Discount;
     ui->LineTotal->setText(QString("%1").arg(NewSheet.Total));
 
     /// 数据有变化后提交按钮的字体颜色变红
@@ -267,4 +277,9 @@ void HFX::on_PushButtonSavePath_clicked()
     QWidget *qwidget = new QWidget();
     FileName = QFileDialog::getSaveFileName(qwidget, "亲爱的想存在哪呀", "/", "CSV文件(*.csv)");
     ui->LineSavePath->setText(FileName);
+}
+
+void HFX::on_SpinDiscount_valueChanged()
+{
+    update();
 }
