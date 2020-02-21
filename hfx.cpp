@@ -323,11 +323,6 @@ void HFX::on_PushButtonRead_clicked()
     PyObject *PostList = PyDict_GetItemString(PReturn, "Post");
     PyObject *TotalList = PyDict_GetItemString(PReturn, "Total");
 
-    if (!PyList_Check(NameList))
-    {
-        std::cout<<"Not list!"<<std::endl;
-        return;
-    }
     for (unsigned int i = 0; i < PyList_Size(NameList); i++)
     {
         std::cout<<i<<std::endl;
