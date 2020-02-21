@@ -220,6 +220,30 @@ void HFX::on_PushButtonSave_clicked()
             return;
         }
     }
+
+    // 读取存储路径
+    std::string SavePath = ui->LineSavePath->text().toStdString();
+    if (SavePath.size() < 4)
+    {
+        MyMessageBox msg;
+        msg.setWindowTitle("亲爱的打扰一下哦！");
+        msg.setText("亲爱的,文件的路径是不是没选呀 \n选一下呗");
+        msg.setMySize(400, 180);
+        msg.addButton("好哒",QMessageBox::ActionRole);
+        msg.exec();
+        return;
+    }
+    else if (SavePath.substr(SavePath.size()-4, SavePath.size()) != ".csv")
+    {
+        MyMessageBox msg;
+        msg.setWindowTitle("亲爱的打扰一下哦！");
+        msg.setText("亲爱的,文件名是不是错啦 \n检查一下呗");
+        msg.setMySize(400, 180);
+        msg.addButton("好哒",QMessageBox::ActionRole);
+        msg.exec();
+        return;
+    }
+
     // 讲数据按照日期先后排序
     sort(AllSheet.begin(), AllSheet.end(), sort_Sheet_Date);
     // 初始化Python
@@ -236,8 +260,6 @@ void HFX::on_PushButtonSave_clicked()
     PModule =PyImport_ImportModule("handle_data");
     PFunc= PyObject_GetAttrString(PModule, "save");
 
-    // 读取存储路径
-    std::string SavePath = ui->LineSavePath->text().toStdString();
     // 将数据转换成Python的输入
     PyObject *NameList = PyList_New(0);
     PyObject *TypeList = PyList_New(0);
@@ -307,7 +329,13 @@ void HFX::on_PushButtonRead_clicked()
 {
     std::string FileName;
     QWidget *qwidget = new QWidget();
-    FileName = QFileDialog::getOpenFileName(qwidget, "亲爱的把上次的文件找出来好不好呀", "/", "CSV文件(*.csv)").toStdString();
+    QString QFileName = NULL;
+    QFileName = QFileDialog::getOpenFileName(qwidget, "亲爱的把上次的文件找出来好不好呀", "/", "CSV文件(*.csv)");
+    if (QFileName == NULL)
+    {
+        return;
+    }
+    FileName = QFileName.toStdString();
     Py_SetPythonHome((const wchar_t *)(L"C:/Python38"));
     Py_Initialize();
 
