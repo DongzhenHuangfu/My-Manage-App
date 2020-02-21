@@ -395,7 +395,6 @@ void HFX::on_PushButtonRead_clicked()
 
     for (unsigned int i = 0; i < PyList_Size(NameList); i++)
     {
-        std::cout<<i<<std::endl;
         PyArg_Parse(PyList_GetItem(NameList, i), "s", &NewSheet.Name);
         PyArg_Parse(PyList_GetItem(TypeList, i), "s", &NewSheet.Type);
         PyArg_Parse(PyList_GetItem(DateList, i), "i", &NewSheet.Date);
