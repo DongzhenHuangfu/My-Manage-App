@@ -99,6 +99,8 @@ HFX::HFX(QWidget *parent)
     , ui(new Ui::HFX), LoadFlag(false)
 {
     ui->setupUi(this);
+    const QString NowType = ui->ComboType->currentText();
+    set_price(NowType);
     update();
 }
 
