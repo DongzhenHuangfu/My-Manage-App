@@ -343,6 +343,10 @@ void HFX::on_PushButtonSavePath_clicked()
     QString FileName;
     QWidget *qwidget = new QWidget();
     FileName = QFileDialog::getSaveFileName(qwidget, "亲爱的想存在哪呀", "", "CSV文件(*.csv)");
+    if (FileName == NULL)
+    {
+        return;
+    }
     ui->LineSavePath->setText(FileName);
 }
 
