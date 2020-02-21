@@ -101,6 +101,7 @@ HFX::HFX(QWidget *parent)
     ui->setupUi(this);
     const QString NowType = ui->ComboType->currentText();
     set_price(NowType);
+    ui->PushButtonRead->setStyleSheet("color:red");
     update();
 }
 
@@ -356,6 +357,7 @@ void HFX::on_PushButtonRead_clicked()
     Py_Finalize();
 
     LoadFlag = true;
+    ui->PushButtonRead->setStyleSheet("color:green");
 
     MyMessageBox msg;
     msg.setWindowTitle("亲爱的真棒！");
