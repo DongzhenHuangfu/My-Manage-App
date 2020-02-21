@@ -96,7 +96,7 @@ bool sort_Sheet_Date(const Sheet &p1, const Sheet &p2)
 
 HFX::HFX(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::HFX), LoadFlag(false)
+    , ui(new Ui::HFX), LoadFlag(false), Changed(true)
 {
     ui->setupUi(this);
     const QString NowType = ui->ComboType->currentText();
@@ -169,6 +169,8 @@ void HFX::update()
     ui->LineTotal->setText(QString("%1").arg(NewSheet.Total));
 
     /// 数据有变化后提交按钮的字体颜色变红
+    /// 相应的变量变为false
+    Changed = true;
     ui->PushButtonSubmit->setStyleSheet("color:red");
 }
 
@@ -194,18 +196,30 @@ void HFX::on_SpinPost_valueChanged()
 
 void HFX::on_SpinDate_textChanged()
 {
+    Changed = true;
     ui->PushButtonSubmit->setStyleSheet("color:red");
 }
 
 void HFX::on_LineName_textChanged()
 {
+    Changed = true;
     ui->PushButtonSubmit->setStyleSheet("color:red");
 }
 
 void HFX::on_PushButtonSubmit_clicked()
 {
+    if (!Changed)
+    {
+        auto reply = QMessageBox::question(this, "亲爱的稍等！", "这个数据已经存过一次了！\n 要再存一次吗？", QMessageBox::Yes | QMessageBox::No);
+        if (reply == QMessageBox::No)
+        {
+            return;
+        }
+    }
     update();
     AllSheet.push_back(NewSheet);
+    /// 相应的变量变为true
+    Changed = false;
     ui->PushButtonSubmit->setStyleSheet("color:green");
 }
 

@@ -107,6 +107,6 @@ private:
     /// 实时的表单数据
     Sheet NewSheet;
     std::vector<Sheet> AllSheet;
-    bool LoadFlag;
+    bool LoadFlag, Changed;
 };
 #endif // HFX_H
