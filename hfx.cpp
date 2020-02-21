@@ -228,6 +228,7 @@ void HFX::on_PushButtonSave_clicked()
     PyObject *DateList = PyList_New(0);
     PyObject *AmountList = PyList_New(0);
     PyObject *DealList = PyList_New(0);
+    PyObject *DiscountList = PyList_New(0);
     PyObject *PriceList = PyList_New(0);
     PyObject *PostList = PyList_New(0);
     PyObject *TotalList = PyList_New(0);
@@ -242,6 +243,7 @@ void HFX::on_PushButtonSave_clicked()
         PyList_Append(DateList, Py_BuildValue("i", AllSheet[i].Date));
         PyList_Append(AmountList, Py_BuildValue("i", AllSheet[i].Amount));
         PyList_Append(DealList, Py_BuildValue("i", AllSheet[i].Deal));
+        PyList_Append(DiscountList, Py_BuildValue("f", AllSheet[i].Discount));
         PyList_Append(PriceList, Py_BuildValue("f", AllSheet[i].Price));
         PyList_Append(PostList, Py_BuildValue("f", AllSheet[i].Post));
         PyList_Append(TotalList, Py_BuildValue("l", AllSheet[i].Total));
@@ -252,6 +254,7 @@ void HFX::on_PushButtonSave_clicked()
     PyDict_SetItemString(PDict, "Date", DateList);
     PyDict_SetItemString(PDict, "Amount", AmountList);
     PyDict_SetItemString(PDict, "Deal", DealList);
+    PyDict_SetItemString(PDict, "Discount", DiscountList);
     PyDict_SetItemString(PDict, "Price", PriceList);
     PyDict_SetItemString(PDict, "Post", PostList);
     PyDict_SetItemString(PDict, "Total", TotalList);
@@ -315,6 +318,7 @@ void HFX::on_PushButtonRead_clicked()
     PyObject *DateList = PyDict_GetItemString(PReturn, "Date");
     PyObject *AmountList = PyDict_GetItemString(PReturn, "Amount");
     PyObject *DealList = PyDict_GetItemString(PReturn, "Deal");
+    PyObject *DiscountList = PyDict_GetItemString(PReturn, "Discount");
     PyObject *PriceList = PyDict_GetItemString(PReturn, "Price");
     PyObject *PostList = PyDict_GetItemString(PReturn, "Post");
     PyObject *TotalList = PyDict_GetItemString(PReturn, "Total");
@@ -332,6 +336,7 @@ void HFX::on_PushButtonRead_clicked()
         PyArg_Parse(PyList_GetItem(DateList, i), "i", &NewSheet.Date);
         PyArg_Parse(PyList_GetItem(AmountList, i), "i", &NewSheet.Amount);
         PyArg_Parse(PyList_GetItem(DealList, i), "i", &NewSheet.Deal);
+        PyArg_Parse(PyList_GetItem(DiscountList, i), "f", &NewSheet.Discount);
         PyArg_Parse(PyList_GetItem(PriceList, i), "f", &NewSheet.Price);
         PyArg_Parse(PyList_GetItem(PostList, i), "f", &NewSheet.Post);
         PyArg_Parse(PyList_GetItem(TotalList, i), "l", &NewSheet.Total);
