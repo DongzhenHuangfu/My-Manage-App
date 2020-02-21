@@ -96,7 +96,7 @@ bool sort_Sheet_Date(const Sheet &p1, const Sheet &p2)
 
 HFX::HFX(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::HFX)
+    , ui(new Ui::HFX), LoadFlag(false)
 {
     ui->setupUi(this);
     update();
@@ -204,6 +204,15 @@ void HFX::on_PushButtonSubmit_clicked()
 
 void HFX::on_PushButtonSave_clicked()
 {
+    if (!LoadFlag)
+    {
+        auto reply = QMessageBox::question(this, "亲爱的稍等！", "旧文件还没有读取呢！\n 要读取之前的数据吗？", QMessageBox::Yes | QMessageBox::No);
+        if (reply == QMessageBox::Yes)
+        {
+            on_PushButtonRead_clicked();
+            return;
+        }
+    }
     // 讲数据按照日期先后排序
     sort(AllSheet.begin(), AllSheet.end(), sort_Sheet_Date);
     // 初始化Python
@@ -338,12 +347,14 @@ void HFX::on_PushButtonRead_clicked()
         AllSheet.push_back(NewSheet);
     }
 
+    Py_Finalize();
+
+    LoadFlag = true;
+
     MyMessageBox msg;
     msg.setWindowTitle("亲爱的真棒！");
     msg.setText("读取成功！");
     msg.setMySize(400, 180);
     msg.addButton("好哒",QMessageBox::ActionRole);
     msg.exec();
-
-    Py_Finalize();
 }
