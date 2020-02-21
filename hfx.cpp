@@ -342,7 +342,7 @@ void HFX::on_PushButtonSavePath_clicked()
 {
     QString FileName;
     QWidget *qwidget = new QWidget();
-    FileName = QFileDialog::getSaveFileName(qwidget, "亲爱的想存在哪呀", "/", "CSV文件(*.csv)");
+    FileName = QFileDialog::getSaveFileName(qwidget, "亲爱的想存在哪呀", "", "CSV文件(*.csv)");
     ui->LineSavePath->setText(FileName);
 }
 
@@ -356,7 +356,7 @@ void HFX::on_PushButtonRead_clicked()
     std::string FileName;
     QWidget *qwidget = new QWidget();
     QString QFileName = NULL;
-    QFileName = QFileDialog::getOpenFileName(qwidget, "亲爱的把上次的文件找出来好不好呀", "/", "CSV文件(*.csv)");
+    QFileName = QFileDialog::getOpenFileName(qwidget, "亲爱的把上次的文件找出来好不好呀", "", "CSV文件(*.csv)");
     if (QFileName == NULL)
     {
         return;
