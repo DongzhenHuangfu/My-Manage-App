@@ -107,8 +107,7 @@ HFX::~HFX()
     delete ui;
 }
 
-
-void HFX::on_ComboType_currentIndexChanged(const QString &TypeName)
+void HFX::set_price(const QString &TypeName)
 {
     // 自动根据商品种类更改商品单价
     if (TypeName == QString("泡脚方"))
@@ -143,6 +142,11 @@ void HFX::on_ComboType_currentIndexChanged(const QString &TypeName)
     {
         ui->SpinPrice->setValue(9);
     }
+}
+
+void HFX::on_ComboType_currentIndexChanged(const QString &TypeName)
+{
+    set_price(TypeName);
     update();
 }
 
