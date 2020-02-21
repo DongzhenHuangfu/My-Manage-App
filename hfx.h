@@ -99,6 +99,8 @@ private slots:
 
     void on_SpinDiscount_valueChanged();
 
+    void on_PushButtonRead_clicked();
+
 private:
     Ui::HFX *ui;
     /// 实时的表单数据

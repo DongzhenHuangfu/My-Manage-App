@@ -283,3 +283,67 @@ void HFX::on_SpinDiscount_valueChanged()
 {
     update();
 }
+
+void HFX::on_PushButtonRead_clicked()
+{
+    std::string FileName;
+    QWidget *qwidget = new QWidget();
+    FileName = QFileDialog::getOpenFileName(qwidget, "亲爱的把上次的文件找出来好不好呀", "/", "CSV文件(*.csv)").toStdString();
+    Py_SetPythonHome((const wchar_t *)(L"C:/Python38"));
+    Py_Initialize();
+
+    if (!Py_IsInitialized())
+    {
+        ui->PushButtonRead->setStyleSheet("color:blue");
+        return;
+    }
+
+    PyObject *PModule = NULL;
+    PyObject *PFunc = NULL;
+    PyObject *PReturn = NULL;
+
+    PModule =PyImport_ImportModule("handle_data");
+    PFunc= PyObject_GetAttrString(PModule, "read");
+
+    PyObject *PArgs = PyTuple_New(1);
+    PyTuple_SetItem(PArgs, 0, Py_BuildValue("s", FileName.data()));
+
+    PReturn = PyEval_CallObject(PFunc, PArgs);
+
+    PyObject *NameList = PyDict_GetItemString(PReturn, "Name");
+    PyObject *TypeList = PyDict_GetItemString(PReturn, "Type");
+    PyObject *DateList = PyDict_GetItemString(PReturn, "Date");
+    PyObject *AmountList = PyDict_GetItemString(PReturn, "Amount");
+    PyObject *DealList = PyDict_GetItemString(PReturn, "Deal");
+    PyObject *PriceList = PyDict_GetItemString(PReturn, "Price");
+    PyObject *PostList = PyDict_GetItemString(PReturn, "Post");
+    PyObject *TotalList = PyDict_GetItemString(PReturn, "Total");
+
+    if (!PyList_Check(NameList))
+    {
+        std::cout<<"Not list!"<<std::endl;
+        return;
+    }
+    for (unsigned int i = 0; i < PyList_Size(NameList); i++)
+    {
+        std::cout<<i<<std::endl;
+        PyArg_Parse(PyList_GetItem(NameList, i), "s", &NewSheet.Name);
+        PyArg_Parse(PyList_GetItem(TypeList, i), "s", &NewSheet.Type);
+        PyArg_Parse(PyList_GetItem(DateList, i), "i", &NewSheet.Date);
+        PyArg_Parse(PyList_GetItem(AmountList, i), "i", &NewSheet.Amount);
+        PyArg_Parse(PyList_GetItem(DealList, i), "i", &NewSheet.Deal);
+        PyArg_Parse(PyList_GetItem(PriceList, i), "f", &NewSheet.Price);
+        PyArg_Parse(PyList_GetItem(PostList, i), "f", &NewSheet.Post);
+        PyArg_Parse(PyList_GetItem(TotalList, i), "l", &NewSheet.Total);
+        AllSheet.push_back(NewSheet);
+    }
+
+    MyMessageBox msg;
+    msg.setWindowTitle("亲爱的真棒！");
+    msg.setText("读取成功！");
+    msg.setMySize(400, 180);
+    msg.addButton("好哒",QMessageBox::ActionRole);
+    msg.exec();
+
+    Py_Finalize();
+}
