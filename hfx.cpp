@@ -244,6 +244,18 @@ void HFX::on_PushButtonSave_clicked()
         return;
     }
 
+    // 检查现有数据向量
+    if (AllSheet.size() == 0)
+    {
+        MyMessageBox msg;
+        msg.setWindowTitle("懒虫！！！");
+        msg.setText("亲爱的,你没有输入数据呢还！ \n快填！！");
+        msg.setMySize(400, 180);
+        msg.addButton("好哒",QMessageBox::ActionRole);
+        msg.exec();
+        return;
+    }
+
     // 讲数据按照日期先后排序
     sort(AllSheet.begin(), AllSheet.end(), sort_Sheet_Date);
     // 初始化Python
