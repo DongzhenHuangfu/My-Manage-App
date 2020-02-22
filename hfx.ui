@@ -23,7 +23,7 @@
        </font>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="TabIncome">
        <property name="font">
@@ -671,6 +671,11 @@
          </layout>
         </item>
        </layout>
+      </widget>
+      <widget class="QWidget" name="TabOutcome">
+       <attribute name="title">
+        <string>支出表格</string>
+       </attribute>
       </widget>
      </widget>
     </item>
