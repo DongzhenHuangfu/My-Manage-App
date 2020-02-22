@@ -375,7 +375,7 @@
                </spacer>
               </item>
               <item>
-               <widget class="QDoubleSpinBox" name="SpinDiscount">
+               <widget class="QDoubleSpinBox" name="SpinDeal">
                 <property name="font">
                  <font>
                   <pointsize>12</pointsize>
@@ -413,7 +413,7 @@
                </spacer>
               </item>
               <item>
-               <widget class="QDoubleSpinBox" name="SpinDeal">
+               <widget class="QDoubleSpinBox" name="SpinDiscount">
                 <property name="font">
                  <font>
                   <pointsize>12</pointsize>
