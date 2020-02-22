@@ -427,6 +427,8 @@ void HFX::on_PushButtonRead_clicked()
         PyArg_Parse(PyList_GetItem(PriceList, i), "f", &NewSheet.Price);
         PyArg_Parse(PyList_GetItem(PostList, i), "f", &NewSheet.Post);
         PyArg_Parse(PyList_GetItem(TotalList, i), "l", &NewSheet.Total);
+
+        set_table_income(NewSheet);
         AllSheet.push_back(NewSheet);
     }
 
