@@ -104,6 +104,8 @@ HFX::HFX(QWidget *parent)
     set_price(NowType);
     ui->PushButtonRead->setStyleSheet("color:red");
     update();
+    ui->tableWidgetIncome->resizeColumnsToContents();
+    ui->tableWidgetIncome->resizeRowsToContents();
 }
 
 HFX::~HFX()
