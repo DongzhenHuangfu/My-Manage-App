@@ -76,6 +76,7 @@ public:
     /// 按照表格更新数据，计算总价数额
     void update();
     void set_price(const QString &TypeName);
+    void set_table_income(Sheet NowSheet);
 
 private slots:
     void on_ComboType_currentIndexChanged(const QString &TypeName);

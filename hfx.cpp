@@ -99,6 +99,7 @@ HFX::HFX(QWidget *parent)
     , ui(new Ui::HFX), LoadFlag(false), Changed(true)
 {
     ui->setupUi(this);
+    ui->tableWidgetIncome->setEditTriggers(QAbstractItemView::NoEditTriggers);
     const QString NowType = ui->ComboType->currentText();
     set_price(NowType);
     ui->PushButtonRead->setStyleSheet("color:red");
@@ -206,6 +207,23 @@ void HFX::on_LineName_textChanged()
     ui->PushButtonSubmit->setStyleSheet("color:red");
 }
 
+void HFX::set_table_income(Sheet NowSheet)
+{
+    ui->tableWidgetIncome->insertRow(AllSheet.size());
+    ui->tableWidgetIncome->setItem(AllSheet.size(), 0, new QTableWidgetItem(QString::number(NowSheet.Date)));
+    ui->tableWidgetIncome->setItem(AllSheet.size(), 1, new QTableWidgetItem(NowSheet.Name.data()));
+    ui->tableWidgetIncome->setItem(AllSheet.size(), 2, new QTableWidgetItem(NowSheet.Type.data()));
+    ui->tableWidgetIncome->setItem(AllSheet.size(), 3, new QTableWidgetItem(QString::number(NowSheet.Price)));
+    ui->tableWidgetIncome->setItem(AllSheet.size(), 4, new QTableWidgetItem(QString::number(NowSheet.Amount)));
+    ui->tableWidgetIncome->setItem(AllSheet.size(), 5, new QTableWidgetItem(QString::number(NowSheet.Deal)));
+    ui->tableWidgetIncome->setItem(AllSheet.size(), 6, new QTableWidgetItem(QString::number(NowSheet.Discount)));
+    ui->tableWidgetIncome->setItem(AllSheet.size(), 7, new QTableWidgetItem(QString::number(NowSheet.Post)));
+    ui->tableWidgetIncome->setItem(AllSheet.size(), 8, new QTableWidgetItem(QString::number(NowSheet.Total)));
+
+    ui->tableWidgetIncome->resizeColumnsToContents();
+    ui->tableWidgetIncome->resizeRowsToContents();
+}
+
 void HFX::on_PushButtonSubmit_clicked()
 {
     if (!Changed)
@@ -217,6 +235,7 @@ void HFX::on_PushButtonSubmit_clicked()
         }
     }
     update();
+    set_table_income(NewSheet);
     AllSheet.push_back(NewSheet);
     /// 相应的变量变为true
     Changed = false;
