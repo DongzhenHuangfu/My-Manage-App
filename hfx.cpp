@@ -96,7 +96,7 @@ bool sort_Sheet_Date(const Sheet &p1, const Sheet &p2)
 
 HFX::HFX(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::HFX), LoadFlag(false), Changed(true), Saved(false)
+    , ui(new Ui::HFX), LoadFlag(false), Changed(true), Saved(false), IsEdit(false)
 {
     ui->setupUi(this);
     ui->tableWidgetIncome->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -477,4 +477,52 @@ void HFX::closeEvent(QCloseEvent *event)
     }
 
     event->accept();
+}
+
+void HFX::on_tableWidgetIncome_itemDoubleClicked(QTableWidgetItem *item)
+{
+    IsEdit = true;
+    ui->tableWidgetIncome->editItem(item);
+}
+
+void HFX::on_tableWidgetIncome_itemChanged(QTableWidgetItem *item)
+{
+    if (!IsEdit)
+    {
+        return;
+    }
+    int row = ui->tableWidgetIncome->row(item);
+    int column = ui->tableWidgetIncome->column(item);
+    switch (column)
+    {
+    case 0:
+        AllSheet[row].Date = item->data(Qt::DisplayRole).toInt();
+        break;
+    case 1:
+        AllSheet[row].Name = item->data(Qt::DisplayRole).toString().toStdString();
+        break;
+    case 2:
+        AllSheet[row].Type = item->data(Qt::DisplayRole).toString().toStdString();
+        break;
+    case 3:
+        AllSheet[row].Price = item->data(Qt::DisplayRole).toFloat();
+        break;
+    case 4:
+        AllSheet[row].Amount = item->data(Qt::DisplayRole).toInt();
+        break;
+    case 5:
+        AllSheet[row].Deal = item->data(Qt::DisplayRole).toInt();
+        break;
+    case 6:
+        AllSheet[row].Discount = item->data(Qt::DisplayRole).toFloat();
+        break;
+    case 7:
+        AllSheet[row].Post = item->data(Qt::DisplayRole).toFloat();
+        break;
+    case 8:
+        AllSheet[row].Total = item->data(Qt::DisplayRole).toFloat();
+    }
+
+    Saved = false;
+    IsEdit = false;
 }

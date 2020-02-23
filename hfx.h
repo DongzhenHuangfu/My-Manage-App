@@ -7,6 +7,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QCloseEvent>
+#include <QTableWidgetItem>
 #include <vector>
 #include <string>
 #include <iostream>
@@ -106,11 +107,15 @@ private slots:
 
     void closeEvent(QCloseEvent *event);
 
+    void on_tableWidgetIncome_itemDoubleClicked(QTableWidgetItem *item);
+
+    void on_tableWidgetIncome_itemChanged(QTableWidgetItem *item);
+
 private:
     Ui::HFX *ui;
     /// 实时的表单数据
     Sheet NewSheet;
     std::vector<Sheet> AllSheet;
-    bool LoadFlag, Changed, Saved;
+    bool LoadFlag, Changed, Saved, IsEdit;
 };
 #endif // HFX_H
