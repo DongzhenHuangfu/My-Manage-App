@@ -6,6 +6,7 @@
 #include <QMainWindow>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QCloseEvent>
 #include <vector>
 #include <string>
 #include <iostream>
@@ -103,11 +104,13 @@ private slots:
 
     void on_pushButtonDeletIncome_clicked();
 
+    void closeEvent(QCloseEvent *event);
+
 private:
     Ui::HFX *ui;
     /// 实时的表单数据
     Sheet NewSheet;
     std::vector<Sheet> AllSheet;
-    bool LoadFlag, Changed;
+    bool LoadFlag, Changed, Saved;
 };
 #endif // HFX_H

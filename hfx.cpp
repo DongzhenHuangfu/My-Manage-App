@@ -96,7 +96,7 @@ bool sort_Sheet_Date(const Sheet &p1, const Sheet &p2)
 
 HFX::HFX(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::HFX), LoadFlag(false), Changed(true)
+    , ui(new Ui::HFX), LoadFlag(false), Changed(true), Saved(false)
 {
     ui->setupUi(this);
     ui->tableWidgetIncome->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -241,6 +241,7 @@ void HFX::on_PushButtonSubmit_clicked()
     AllSheet.push_back(NewSheet);
     /// 相应的变量变为true
     Changed = false;
+    Saved = false;
     ui->PushButtonSubmit->setStyleSheet("color:green");
 }
 
@@ -345,6 +346,8 @@ void HFX::on_PushButtonSave_clicked()
     msg.setMySize(400, 180);
     msg.addButton("好哒",QMessageBox::ActionRole);
     msg.exec();
+
+    Saved = true;
 }
 
 void HFX::on_SpinDiscount_valueChanged()
@@ -450,4 +453,28 @@ void HFX::on_pushButtonDeletIncome_clicked()
         AllSheet.erase(AllSheet.begin() + row - Count);
         Count ++;
     }
+
+    Saved = false;
+}
+
+void HFX::closeEvent(QCloseEvent *event)
+{
+    if (Saved)
+    {
+        event->accept();
+        return;
+    }
+
+    auto reply = QMessageBox::question(this, "亲爱的稍等！", "更改的表格还没有存储呢！\n 要存储后再退出吗？", QMessageBox::Yes | QMessageBox::Cancel | QMessageBox::No);
+    if (reply == QMessageBox::Yes)
+    {
+        on_PushButtonSave_clicked();
+    }
+    else if (reply == QMessageBox::Cancel)
+    {
+        event->ignore();
+        return;
+    }
+
+    event->accept();
 }
