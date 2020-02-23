@@ -446,3 +446,32 @@ void HFX::on_PushButtonRead_clicked()
     msg.addButton("好哒",QMessageBox::ActionRole);
     msg.exec();
 }
+
+void HFX::on_pushButtonDeletIncome_clicked()
+{
+    QList<QTableWidgetItem*> items = ui->tableWidgetIncome->selectedItems();
+    // 获取选取的行号
+    std::vector<int> SelectedRows;
+    for (int i = 0; i < items.count(); i++)
+    {
+        int row = ui->tableWidgetIncome->row(items.at(i));
+        if (i == 0)
+        {
+            SelectedRows.push_back(row);
+            continue;
+        }
+
+        else if (row != *(SelectedRows.end()-1))
+        {
+            SelectedRows.push_back(row);
+        }
+    }
+    // 删去被选中的行
+    int Count = 0;
+    for (const auto row : SelectedRows)
+    {
+        ui->tableWidgetIncome->removeRow(row - Count);
+        AllSheet.erase(AllSheet.begin() + row - Count);
+        Count ++;
+    }
+}

@@ -103,6 +103,8 @@ private slots:
 
     void on_PushButtonRead_clicked();
 
+    void on_pushButtonDeletIncome_clicked();
+
 private:
     Ui::HFX *ui;
     /// 实时的表单数据
