@@ -281,7 +281,8 @@ void HFX::on_PushButtonSave_clicked()
     }
 
     // 讲数据按照日期先后排序
-    sort(AllSheet.begin(), AllSheet.end(), sort_Sheet_Date);
+    auto AllSheetSave = AllSheet;
+    sort(AllSheetSave.begin(), AllSheetSave.end(), sort_Sheet_Date);
     // 初始化Python
     Py_SetPythonHome((const wchar_t *)(L"C:/Python38"));
     Py_Initialize();
