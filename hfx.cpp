@@ -256,28 +256,16 @@ void HFX::on_PushButtonSave_clicked()
         }
     }
 
+    QString FileName;
+    QWidget *qwidget = new QWidget();
+    FileName = QFileDialog::getSaveFileName(qwidget, "亲爱的想存在哪呀", "", "CSV文件(*.csv)");
+    if (FileName == NULL)
+    {
+        return;
+    }
+
     // 读取存储路径
-    std::string SavePath = ui->LineSavePath->text().toStdString();
-    if (SavePath.size() < 4)
-    {
-        MyMessageBox msg;
-        msg.setWindowTitle("亲爱的打扰一下哦！");
-        msg.setText("亲爱的,文件的路径是不是没选呀 \n选一下呗");
-        msg.setMySize(400, 180);
-        msg.addButton("好哒",QMessageBox::ActionRole);
-        msg.exec();
-        return;
-    }
-    else if (SavePath.substr(SavePath.size()-4, SavePath.size()) != ".csv")
-    {
-        MyMessageBox msg;
-        msg.setWindowTitle("亲爱的打扰一下哦！");
-        msg.setText("亲爱的,文件名是不是错啦 \n检查一下呗");
-        msg.setMySize(400, 180);
-        msg.addButton("好哒",QMessageBox::ActionRole);
-        msg.exec();
-        return;
-    }
+    std::string SavePath = FileName.toStdString();
 
     // 检查现有数据向量
     if (AllSheet.size() == 0)
@@ -357,18 +345,6 @@ void HFX::on_PushButtonSave_clicked()
     msg.setMySize(400, 180);
     msg.addButton("好哒",QMessageBox::ActionRole);
     msg.exec();
-}
-
-void HFX::on_PushButtonSavePath_clicked()
-{
-    QString FileName;
-    QWidget *qwidget = new QWidget();
-    FileName = QFileDialog::getSaveFileName(qwidget, "亲爱的想存在哪呀", "", "CSV文件(*.csv)");
-    if (FileName == NULL)
-    {
-        return;
-    }
-    ui->LineSavePath->setText(FileName);
 }
 
 void HFX::on_SpinDiscount_valueChanged()
