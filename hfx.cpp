@@ -257,17 +257,6 @@ void HFX::on_PushButtonSaveIncome_clicked()
         }
     }
 
-    QString FileName;
-    QWidget *qwidget = new QWidget();
-    FileName = QFileDialog::getSaveFileName(qwidget, "亲爱的想存在哪呀", "", "CSV文件(*.csv)");
-    if (FileName == NULL)
-    {
-        return;
-    }
-
-    // 读取存储路径
-    std::string SavePath = FileName.toStdString();
-
     // 检查现有数据向量
     if (InAllSheet_.size() == 0)
     {
@@ -279,6 +268,17 @@ void HFX::on_PushButtonSaveIncome_clicked()
         msg.exec();
         return;
     }
+
+    QString FileName;
+    QWidget *qwidget = new QWidget();
+    FileName = QFileDialog::getSaveFileName(qwidget, "亲爱的想存在哪呀", "", "CSV文件(*.csv)");
+    if (FileName == NULL)
+    {
+        return;
+    }
+
+    // 读取存储路径
+    std::string SavePath = FileName.toStdString();
 
     // 讲数据按照日期先后排序
     auto AllSheetSave = InAllSheet_;
