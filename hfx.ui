@@ -66,7 +66,7 @@
              </spacer>
             </item>
             <item>
-             <widget class="QPushButton" name="PushButtonRead">
+             <widget class="QPushButton" name="PushButtonReadIncome">
               <property name="text">
                <string>读取文件</string>
               </property>
@@ -75,7 +75,7 @@
             <item>
              <layout class="QHBoxLayout" name="HLDate">
               <item>
-               <widget class="QLabel" name="LabelDate">
+               <widget class="QLabel" name="LabelDateIncome">
                 <property name="font">
                  <font>
                   <pointsize>12</pointsize>
@@ -100,7 +100,7 @@
                </spacer>
               </item>
               <item>
-               <widget class="QSpinBox" name="SpinDate">
+               <widget class="QSpinBox" name="SpinDateIncome">
                 <property name="minimumSize">
                  <size>
                   <width>170</width>
@@ -131,7 +131,7 @@
             <item>
              <layout class="QHBoxLayout" name="HLName">
               <item>
-               <widget class="QLabel" name="LabelName">
+               <widget class="QLabel" name="LabelNameIncome">
                 <property name="font">
                  <font>
                   <pointsize>12</pointsize>
@@ -156,7 +156,7 @@
                </spacer>
               </item>
               <item>
-               <widget class="QLineEdit" name="LineName">
+               <widget class="QLineEdit" name="LineNameIncome">
                 <property name="minimumSize">
                  <size>
                   <width>120</width>
@@ -193,7 +193,7 @@
             <item>
              <layout class="QHBoxLayout" name="HLType">
               <item>
-               <widget class="QLabel" name="LabelType">
+               <widget class="QLabel" name="LabelTypeIncome">
                 <property name="font">
                  <font>
                   <pointsize>12</pointsize>
@@ -218,7 +218,7 @@
                </spacer>
               </item>
               <item>
-               <widget class="QComboBox" name="ComboType">
+               <widget class="QComboBox" name="ComboTypeIncome">
                 <property name="font">
                  <font>
                   <pointsize>12</pointsize>
@@ -271,7 +271,7 @@
             <item>
              <layout class="QHBoxLayout" name="HLPrice">
               <item>
-               <widget class="QLabel" name="LabelPrice">
+               <widget class="QLabel" name="LabelPriceIncome">
                 <property name="font">
                  <font>
                   <pointsize>12</pointsize>
@@ -296,7 +296,7 @@
                </spacer>
               </item>
               <item>
-               <widget class="QDoubleSpinBox" name="SpinPrice">
+               <widget class="QDoubleSpinBox" name="SpinPriceIncome">
                 <property name="font">
                  <font>
                   <pointsize>12</pointsize>
@@ -312,7 +312,7 @@
             <item>
              <layout class="QHBoxLayout" name="HLAmount">
               <item>
-               <widget class="QLabel" name="LabelAmount">
+               <widget class="QLabel" name="LabelAmountIncome">
                 <property name="font">
                  <font>
                   <pointsize>12</pointsize>
@@ -337,7 +337,7 @@
                </spacer>
               </item>
               <item>
-               <widget class="QSpinBox" name="SpinAmount">
+               <widget class="QSpinBox" name="SpinAmountIncome">
                 <property name="font">
                  <font>
                   <pointsize>12</pointsize>
@@ -350,7 +350,7 @@
             <item>
              <layout class="QHBoxLayout" name="HLDeal">
               <item>
-               <widget class="QLabel" name="LabelDeal">
+               <widget class="QLabel" name="LabelDealIncome">
                 <property name="font">
                  <font>
                   <pointsize>12</pointsize>
@@ -375,7 +375,7 @@
                </spacer>
               </item>
               <item>
-               <widget class="QDoubleSpinBox" name="SpinDeal">
+               <widget class="QDoubleSpinBox" name="SpinDealIncome">
                 <property name="font">
                  <font>
                   <pointsize>12</pointsize>
@@ -388,7 +388,7 @@
             <item>
              <layout class="QHBoxLayout" name="HLDiscount">
               <item>
-               <widget class="QLabel" name="label">
+               <widget class="QLabel" name="LabelDiscountIncome">
                 <property name="font">
                  <font>
                   <pointsize>12</pointsize>
@@ -413,7 +413,7 @@
                </spacer>
               </item>
               <item>
-               <widget class="QDoubleSpinBox" name="SpinDiscount">
+               <widget class="QDoubleSpinBox" name="SpinDiscountIncome">
                 <property name="font">
                  <font>
                   <pointsize>12</pointsize>
@@ -426,7 +426,7 @@
             <item>
              <layout class="QHBoxLayout" name="HLPost">
               <item>
-               <widget class="QLabel" name="LabelPost">
+               <widget class="QLabel" name="LabelPostIncome">
                 <property name="font">
                  <font>
                   <pointsize>12</pointsize>
@@ -451,7 +451,7 @@
                </spacer>
               </item>
               <item>
-               <widget class="QDoubleSpinBox" name="SpinPost">
+               <widget class="QDoubleSpinBox" name="SpinPostIncome">
                 <property name="font">
                  <font>
                   <pointsize>12</pointsize>
@@ -479,7 +479,7 @@
               <item>
                <layout class="QHBoxLayout" name="HLTotal">
                 <item>
-                 <widget class="QLabel" name="LabelTotal">
+                 <widget class="QLabel" name="LabelTotalIncome">
                   <property name="font">
                    <font>
                     <pointsize>12</pointsize>
@@ -504,7 +504,7 @@
                  </spacer>
                 </item>
                 <item>
-                 <widget class="QLineEdit" name="LineTotal">
+                 <widget class="QLineEdit" name="LineTotalIncome">
                   <property name="minimumSize">
                    <size>
                     <width>80</width>
@@ -554,7 +554,7 @@
                  </spacer>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="PushButtonSubmit">
+                 <widget class="QPushButton" name="PushButtonSubmitIncome">
                   <property name="font">
                    <font>
                     <pointsize>12</pointsize>
@@ -677,7 +677,7 @@
                </spacer>
               </item>
               <item>
-               <widget class="QPushButton" name="PushButtonSave">
+               <widget class="QPushButton" name="PushButtonSaveIncome">
                 <property name="text">
                  <string>保存</string>
                 </property>
