@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>1274</width>
     <height>600</height>
    </rect>
   </property>
@@ -38,7 +38,7 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_3">
           <item>
-           <spacer name="horizontalSpacer_9">
+           <spacer name="horizontalSpacer_8">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -66,7 +66,7 @@
              </spacer>
             </item>
             <item>
-             <widget class="QPushButton" name="PushButtonRead">
+             <widget class="QPushButton" name="PushButtonReadIncome">
               <property name="text">
                <string>读取文件</string>
               </property>
@@ -75,7 +75,7 @@
             <item>
              <layout class="QHBoxLayout" name="HLDate">
               <item>
-               <widget class="QLabel" name="LabelDate">
+               <widget class="QLabel" name="LabelDateIncome">
                 <property name="font">
                  <font>
                   <pointsize>12</pointsize>
@@ -100,7 +100,7 @@
                </spacer>
               </item>
               <item>
-               <widget class="QSpinBox" name="SpinDate">
+               <widget class="QSpinBox" name="SpinDateIncome">
                 <property name="minimumSize">
                  <size>
                   <width>170</width>
@@ -131,7 +131,7 @@
             <item>
              <layout class="QHBoxLayout" name="HLName">
               <item>
-               <widget class="QLabel" name="LabelName">
+               <widget class="QLabel" name="LabelNameIncome">
                 <property name="font">
                  <font>
                   <pointsize>12</pointsize>
@@ -156,7 +156,7 @@
                </spacer>
               </item>
               <item>
-               <widget class="QLineEdit" name="LineName">
+               <widget class="QLineEdit" name="LineNameIncome">
                 <property name="minimumSize">
                  <size>
                   <width>120</width>
@@ -193,7 +193,7 @@
             <item>
              <layout class="QHBoxLayout" name="HLType">
               <item>
-               <widget class="QLabel" name="LabelType">
+               <widget class="QLabel" name="LabelTypeIncome">
                 <property name="font">
                  <font>
                   <pointsize>12</pointsize>
@@ -218,7 +218,7 @@
                </spacer>
               </item>
               <item>
-               <widget class="QComboBox" name="ComboType">
+               <widget class="QComboBox" name="ComboTypeIncome">
                 <property name="font">
                  <font>
                   <pointsize>12</pointsize>
@@ -271,7 +271,7 @@
             <item>
              <layout class="QHBoxLayout" name="HLPrice">
               <item>
-               <widget class="QLabel" name="LabelPrice">
+               <widget class="QLabel" name="LabelPriceIncome">
                 <property name="font">
                  <font>
                   <pointsize>12</pointsize>
@@ -296,7 +296,7 @@
                </spacer>
               </item>
               <item>
-               <widget class="QDoubleSpinBox" name="SpinPrice">
+               <widget class="QDoubleSpinBox" name="SpinPriceIncome">
                 <property name="font">
                  <font>
                   <pointsize>12</pointsize>
@@ -312,7 +312,7 @@
             <item>
              <layout class="QHBoxLayout" name="HLAmount">
               <item>
-               <widget class="QLabel" name="LabelAmount">
+               <widget class="QLabel" name="LabelAmountIncome">
                 <property name="font">
                  <font>
                   <pointsize>12</pointsize>
@@ -337,7 +337,7 @@
                </spacer>
               </item>
               <item>
-               <widget class="QSpinBox" name="SpinAmount">
+               <widget class="QSpinBox" name="SpinAmountIncome">
                 <property name="font">
                  <font>
                   <pointsize>12</pointsize>
@@ -350,7 +350,7 @@
             <item>
              <layout class="QHBoxLayout" name="HLDeal">
               <item>
-               <widget class="QLabel" name="LabelDeal">
+               <widget class="QLabel" name="LabelDealIncome">
                 <property name="font">
                  <font>
                   <pointsize>12</pointsize>
@@ -375,20 +375,14 @@
                </spacer>
               </item>
               <item>
-               <widget class="QDoubleSpinBox" name="SpinDiscount">
-                <property name="font">
-                 <font>
-                  <pointsize>12</pointsize>
-                 </font>
-                </property>
-               </widget>
+               <widget class="QSpinBox" name="SpinDealIncome"/>
               </item>
              </layout>
             </item>
             <item>
              <layout class="QHBoxLayout" name="HLDiscount">
               <item>
-               <widget class="QLabel" name="label">
+               <widget class="QLabel" name="LabelDiscountIncome">
                 <property name="font">
                  <font>
                   <pointsize>12</pointsize>
@@ -413,7 +407,7 @@
                </spacer>
               </item>
               <item>
-               <widget class="QDoubleSpinBox" name="SpinDeal">
+               <widget class="QDoubleSpinBox" name="SpinDiscountIncome">
                 <property name="font">
                  <font>
                   <pointsize>12</pointsize>
@@ -426,7 +420,7 @@
             <item>
              <layout class="QHBoxLayout" name="HLPost">
               <item>
-               <widget class="QLabel" name="LabelPost">
+               <widget class="QLabel" name="LabelPostIncome">
                 <property name="font">
                  <font>
                   <pointsize>12</pointsize>
@@ -451,7 +445,7 @@
                </spacer>
               </item>
               <item>
-               <widget class="QDoubleSpinBox" name="SpinPost">
+               <widget class="QDoubleSpinBox" name="SpinPostIncome">
                 <property name="font">
                  <font>
                   <pointsize>12</pointsize>
@@ -479,7 +473,7 @@
               <item>
                <layout class="QHBoxLayout" name="HLTotal">
                 <item>
-                 <widget class="QLabel" name="LabelTotal">
+                 <widget class="QLabel" name="LabelTotalIncome">
                   <property name="font">
                    <font>
                     <pointsize>12</pointsize>
@@ -504,7 +498,7 @@
                  </spacer>
                 </item>
                 <item>
-                 <widget class="QLineEdit" name="LineTotal">
+                 <widget class="QLineEdit" name="LineTotalIncome">
                   <property name="minimumSize">
                    <size>
                     <width>80</width>
@@ -554,7 +548,7 @@
                  </spacer>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="PushButtonSubmit">
+                 <widget class="QPushButton" name="PushButtonSubmitIncome">
                   <property name="font">
                    <font>
                     <pointsize>12</pointsize>
@@ -600,17 +594,69 @@
              </spacer>
             </item>
             <item>
-             <widget class="QLineEdit" name="LineSavePath">
+             <widget class="QTableWidget" name="tableWidgetIncome">
               <property name="minimumSize">
                <size>
-                <width>300</width>
-                <height>0</height>
+                <width>750</width>
+                <height>400</height>
                </size>
               </property>
+              <column>
+               <property name="text">
+                <string>日期</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>姓名</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>种类</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>单价</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>数量</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>赠送</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>折扣</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>邮费</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>总价</string>
+               </property>
+              </column>
              </widget>
             </item>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_2">
+              <item>
+               <widget class="QPushButton" name="pushButtonDeletIncome">
+                <property name="text">
+                 <string>删除</string>
+                </property>
+               </widget>
+              </item>
               <item>
                <spacer name="horizontalSpacer_12">
                 <property name="orientation">
@@ -625,14 +671,7 @@
                </spacer>
               </item>
               <item>
-               <widget class="QPushButton" name="PushButtonSavePath">
-                <property name="text">
-                 <string>选择路径</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="PushButtonSave">
+               <widget class="QPushButton" name="PushButtonSaveIncome">
                 <property name="text">
                  <string>保存</string>
                 </property>
@@ -656,7 +695,7 @@
            </layout>
           </item>
           <item>
-           <spacer name="horizontalSpacer_8">
+           <spacer name="horizontalSpacer_9">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>

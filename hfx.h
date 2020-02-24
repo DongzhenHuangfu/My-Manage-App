@@ -6,6 +6,8 @@
 #include <QMainWindow>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QCloseEvent>
+#include <QTableWidgetItem>
 #include <vector>
 #include <string>
 #include <iostream>
@@ -30,7 +32,7 @@ typedef struct
     int Date, Amount, Deal;
     float Price, Post, Discount;
     long Total;
-}Sheet;
+}InSheet;
 
 /// 定义排序规则：
 /// 日期从小到大，
@@ -41,14 +43,14 @@ typedef struct
 /// 若数量一样则赠送从小到大，
 /// 若赠送一样则折扣从小到大
 /// 若折扣一样则邮费从大到小
-bool sort_Sheet_Date(const Sheet &p1, const Sheet &p2);
-bool sort_Sheet_Name(const Sheet &p1, const Sheet &p2);
-bool sort_Sheet_Type(const Sheet &p1, const Sheet &p2);
-bool sort_Sheet_Price(const Sheet &p1, const Sheet &p2);
-bool sort_Sheet_Amount(const Sheet &p1, const Sheet &p2);
-bool sort_Sheet_Deal(const Sheet &p1, const Sheet &p2);
-bool sort_Sheet_Discount(const Sheet &p1, const Sheet &p2);
-bool sort_Sheet_Post(const Sheet &p1, const Sheet &p2);
+bool sort_Sheet_Date(const InSheet &p1, const InSheet &p2);
+bool sort_Sheet_Name(const InSheet &p1, const InSheet &p2);
+bool sort_Sheet_Type(const InSheet &p1, const InSheet &p2);
+bool sort_Sheet_Price(const InSheet &p1, const InSheet &p2);
+bool sort_Sheet_Amount(const InSheet &p1, const InSheet &p2);
+bool sort_Sheet_Deal(const InSheet &p1, const InSheet &p2);
+bool sort_Sheet_Discount(const InSheet &p1, const InSheet &p2);
+bool sort_Sheet_Post(const InSheet &p1, const InSheet &p2);
 
 class MyMessageBox : public QMessageBox
 {
@@ -74,39 +76,46 @@ public:
     ~HFX();
 
     /// 按照表格更新数据，计算总价数额
-    void update();
-    void set_price(const QString &TypeName);
+    void update_income();
+    void set_price_income(const QString &TypeName);
+    void set_table_income(InSheet NowSheet);
 
 private slots:
-    void on_ComboType_currentIndexChanged(const QString &TypeName);
+    void on_ComboTypeIncome_currentIndexChanged(const QString &TypeName);
 
-    void on_SpinPrice_valueChanged();
+    void on_SpinPriceIncome_valueChanged();
 
-    void on_SpinAmount_valueChanged();
+    void on_SpinAmountIncome_valueChanged();
 
-    void on_SpinDeal_valueChanged();
+    void on_SpinDealIncome_valueChanged();
 
-    void on_SpinPost_valueChanged();
+    void on_SpinPostIncome_valueChanged();
 
-    void on_PushButtonSubmit_clicked();
+    void on_PushButtonSubmitIncome_clicked();
 
-    void on_PushButtonSave_clicked();
+    void on_PushButtonSaveIncome_clicked();
 
-    void on_PushButtonSavePath_clicked();
+    void on_SpinDateIncome_textChanged();
 
-    void on_SpinDate_textChanged();
+    void on_LineNameIncome_textChanged();
 
-    void on_LineName_textChanged();
+    void on_SpinDiscountIncome_valueChanged();
 
-    void on_SpinDiscount_valueChanged();
+    void on_PushButtonReadIncome_clicked();
 
-    void on_PushButtonRead_clicked();
+    void on_pushButtonDeletIncome_clicked();
+
+    void closeEvent(QCloseEvent *event);
+
+    void on_tableWidgetIncome_itemDoubleClicked(QTableWidgetItem *item);
+
+    void on_tableWidgetIncome_itemChanged(QTableWidgetItem *item);
 
 private:
     Ui::HFX *ui;
     /// 实时的表单数据
-    Sheet NewSheet;
-    std::vector<Sheet> AllSheet;
-    bool LoadFlag, Changed;
+    InSheet InNewSheet_;
+    std::vector<InSheet> InAllSheet_;
+    bool InLoadFlag_, InChanged_, InSaved_, InIsEdit_;
 };
 #endif // HFX_H

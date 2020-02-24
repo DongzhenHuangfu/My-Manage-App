@@ -18,12 +18,12 @@ void MyMessageBox::setMySize(int width, int length)
     length_ = length;
 }
 
-bool sort_Sheet_Post(const Sheet &p1, const Sheet &p2)
+bool sort_Sheet_Post(const InSheet &p1, const InSheet &p2)
 {
     return p1.Post > p2.Post;
 }
 
-bool sort_Sheet_Deal(const Sheet &p1, const Sheet &p2)
+bool sort_Sheet_Deal(const InSheet &p1, const InSheet &p2)
 {
     if (p1.Deal == p2.Deal)
     {
@@ -32,7 +32,7 @@ bool sort_Sheet_Deal(const Sheet &p1, const Sheet &p2)
     return p1.Deal < p2.Deal;
 }
 
-bool sort_Sheet_Discount(const Sheet &p1, const Sheet &p2)
+bool sort_Sheet_Discount(const InSheet &p1, const InSheet &p2)
 {
     if (p1.Discount == p2.Discount)
     {
@@ -41,7 +41,7 @@ bool sort_Sheet_Discount(const Sheet &p1, const Sheet &p2)
     return p1.Discount > p2.Discount;
 }
 
-bool sort_Sheet_Amount(const Sheet &p1, const Sheet &p2)
+bool sort_Sheet_Amount(const InSheet &p1, const InSheet &p2)
 {
     if (p1.Amount == p2.Amount)
     {
@@ -50,7 +50,7 @@ bool sort_Sheet_Amount(const Sheet &p1, const Sheet &p2)
     return p1.Amount > p2.Amount;
 }
 
-bool sort_Sheet_Price(const Sheet &p1, const Sheet &p2)
+bool sort_Sheet_Price(const InSheet &p1, const InSheet &p2)
 {
     if(p1.Price == p2.Price)
     {
@@ -59,7 +59,7 @@ bool sort_Sheet_Price(const Sheet &p1, const Sheet &p2)
     return p1.Price > p2.Price;
 }
 
-bool sort_Sheet_Type(const Sheet &p1, const Sheet &p2)
+bool sort_Sheet_Type(const InSheet &p1, const InSheet &p2)
 {
     if (p1.Type.compare(p2.Type) == 0)
     {
@@ -72,7 +72,7 @@ bool sort_Sheet_Type(const Sheet &p1, const Sheet &p2)
     return true;
 }
 
-bool sort_Sheet_Name(const Sheet &p1, const Sheet &p2)
+bool sort_Sheet_Name(const InSheet &p1, const InSheet &p2)
 {
     if (p1.Name.compare(p2.Name) == 0)
     {
@@ -85,7 +85,7 @@ bool sort_Sheet_Name(const Sheet &p1, const Sheet &p2)
     return true;
 }
 
-bool sort_Sheet_Date(const Sheet &p1, const Sheet &p2)
+bool sort_Sheet_Date(const InSheet &p1, const InSheet &p2)
 {
     if (p1.Date == p2.Date)
     {
@@ -96,13 +96,16 @@ bool sort_Sheet_Date(const Sheet &p1, const Sheet &p2)
 
 HFX::HFX(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::HFX), LoadFlag(false), Changed(true)
+    , ui(new Ui::HFX), InLoadFlag_(false), InChanged_(true), InSaved_(false), InIsEdit_(false)
 {
     ui->setupUi(this);
-    const QString NowType = ui->ComboType->currentText();
-    set_price(NowType);
-    ui->PushButtonRead->setStyleSheet("color:red");
-    update();
+    ui->tableWidgetIncome->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    const QString NowType = ui->ComboTypeIncome->currentText();
+    set_price_income(NowType);
+    ui->PushButtonReadIncome->setStyleSheet("color:red");
+    update_income();
+    ui->tableWidgetIncome->resizeColumnsToContents();
+    ui->tableWidgetIncome->resizeRowsToContents();
 }
 
 HFX::~HFX()
@@ -110,105 +113,122 @@ HFX::~HFX()
     delete ui;
 }
 
-void HFX::set_price(const QString &TypeName)
+void HFX::set_price_income(const QString &TypeName)
 {
     // 自动根据商品种类更改商品单价
     if (TypeName == QString("泡脚方"))
     {
-        ui->SpinPrice->setValue(6);
+        ui->SpinPriceIncome->setValue(6);
     }
     else if (TypeName == QString("定制茶"))
     {
-        ui->SpinPrice->setValue(10);
+        ui->SpinPriceIncome->setValue(10);
     }
     else if (TypeName == QString("气血茶"))
     {
-        ui->SpinPrice->setValue(5);
+        ui->SpinPriceIncome->setValue(5);
     }
     else if (TypeName == QString("益气茶"))
     {
-        ui->SpinPrice->setValue(5);
+        ui->SpinPriceIncome->setValue(5);
     }
     else if (TypeName == QString("消火茶"))
     {
-        ui->SpinPrice->setValue(5);
+        ui->SpinPriceIncome->setValue(5);
     }
     else if (TypeName == QString("润肺茶"))
     {
-        ui->SpinPrice->setValue(9);
+        ui->SpinPriceIncome->setValue(9);
     }
     else if (TypeName == QString("减脂茶"))
     {
-        ui->SpinPrice->setValue(9);
+        ui->SpinPriceIncome->setValue(9);
     }
     else if (TypeName == QString("安神茶"))
     {
-        ui->SpinPrice->setValue(9);
+        ui->SpinPriceIncome->setValue(9);
     }
 }
 
-void HFX::on_ComboType_currentIndexChanged(const QString &TypeName)
+void HFX::on_ComboTypeIncome_currentIndexChanged(const QString &TypeName)
 {
-    set_price(TypeName);
-    update();
+    set_price_income(TypeName);
+    update_income();
 }
 
-void HFX::update()
+void HFX::update_income()
 {
     /// 读取表格信息
-    NewSheet.Name = ui->LineName->text().toStdString();
-    NewSheet.Date = ui->SpinDate->text().toInt();
-    NewSheet.Deal = ui->SpinDeal->text().toInt();
-    NewSheet.Post = ui->SpinPost->text().toFloat();
-    NewSheet.Type = ui->ComboType->currentText().toStdString();
-    NewSheet.Amount = ui->SpinAmount->text().toInt();
-    NewSheet.Price = ui->SpinPrice->text().toFloat();
-    NewSheet.Discount = ui->SpinDiscount->text().toFloat();
+    InNewSheet_.Name = ui->LineNameIncome->text().toStdString();
+    InNewSheet_.Date = ui->SpinDateIncome->text().toInt();
+    InNewSheet_.Deal = ui->SpinDealIncome->text().toInt();
+    InNewSheet_.Post = ui->SpinPostIncome->text().toFloat();
+    InNewSheet_.Type = ui->ComboTypeIncome->currentText().toStdString();
+    InNewSheet_.Amount = ui->SpinAmountIncome->text().toInt();
+    InNewSheet_.Price = ui->SpinPriceIncome->text().toFloat();
+    InNewSheet_.Discount = ui->SpinDiscountIncome->text().toFloat();
 
-    NewSheet.Total = (NewSheet.Amount - NewSheet.Deal) * NewSheet.Price + NewSheet.Post - NewSheet.Discount;
-    ui->LineTotal->setText(QString("%1").arg(NewSheet.Total));
+    InNewSheet_.Total = (InNewSheet_.Amount - InNewSheet_.Deal) * InNewSheet_.Price + InNewSheet_.Post - InNewSheet_.Discount;
+    ui->LineTotalIncome->setText(QString("%1").arg(InNewSheet_.Total));
 
     /// 数据有变化后提交按钮的字体颜色变红
     /// 相应的变量变为false
-    Changed = true;
-    ui->PushButtonSubmit->setStyleSheet("color:red");
+    InChanged_ = true;
+    ui->PushButtonSubmitIncome->setStyleSheet("color:red");
 }
 
-void HFX::on_SpinPrice_valueChanged()
+void HFX::on_SpinPriceIncome_valueChanged()
 {
-    update();
+    update_income();
 }
 
-void HFX::on_SpinAmount_valueChanged()
+void HFX::on_SpinAmountIncome_valueChanged()
 {
-    update();
+    update_income();
 }
 
-void HFX::on_SpinDeal_valueChanged()
+void HFX::on_SpinDealIncome_valueChanged()
 {
-    update();
+    update_income();
 }
 
-void HFX::on_SpinPost_valueChanged()
+void HFX::on_SpinPostIncome_valueChanged()
 {
-    update();
+    update_income();
 }
 
-void HFX::on_SpinDate_textChanged()
+void HFX::on_SpinDateIncome_textChanged()
 {
-    Changed = true;
-    ui->PushButtonSubmit->setStyleSheet("color:red");
+    InChanged_ = true;
+    ui->PushButtonSubmitIncome->setStyleSheet("color:red");
 }
 
-void HFX::on_LineName_textChanged()
+void HFX::on_LineNameIncome_textChanged()
 {
-    Changed = true;
-    ui->PushButtonSubmit->setStyleSheet("color:red");
+    InChanged_ = true;
+    ui->PushButtonSubmitIncome->setStyleSheet("color:red");
 }
 
-void HFX::on_PushButtonSubmit_clicked()
+void HFX::set_table_income(InSheet NowSheet)
 {
-    if (!Changed)
+    ui->tableWidgetIncome->insertRow(InAllSheet_.size());
+    ui->tableWidgetIncome->setItem(InAllSheet_.size(), 0, new QTableWidgetItem(QString::number(NowSheet.Date)));
+    ui->tableWidgetIncome->setItem(InAllSheet_.size(), 1, new QTableWidgetItem(NowSheet.Name.data()));
+    ui->tableWidgetIncome->setItem(InAllSheet_.size(), 2, new QTableWidgetItem(NowSheet.Type.data()));
+    ui->tableWidgetIncome->setItem(InAllSheet_.size(), 3, new QTableWidgetItem(QString::number(NowSheet.Price)));
+    ui->tableWidgetIncome->setItem(InAllSheet_.size(), 4, new QTableWidgetItem(QString::number(NowSheet.Amount)));
+    ui->tableWidgetIncome->setItem(InAllSheet_.size(), 5, new QTableWidgetItem(QString::number(NowSheet.Deal)));
+    ui->tableWidgetIncome->setItem(InAllSheet_.size(), 6, new QTableWidgetItem(QString::number(NowSheet.Discount)));
+    ui->tableWidgetIncome->setItem(InAllSheet_.size(), 7, new QTableWidgetItem(QString::number(NowSheet.Post)));
+    ui->tableWidgetIncome->setItem(InAllSheet_.size(), 8, new QTableWidgetItem(QString::number(NowSheet.Total)));
+
+    ui->tableWidgetIncome->resizeColumnsToContents();
+    ui->tableWidgetIncome->resizeRowsToContents();
+}
+
+void HFX::on_PushButtonSubmitIncome_clicked()
+{
+    if (!InChanged_)
     {
         auto reply = QMessageBox::question(this, "亲爱的稍等！", "这个数据已经存过一次了！\n 要再存一次吗？", QMessageBox::Yes | QMessageBox::No);
         if (reply == QMessageBox::No)
@@ -216,50 +236,29 @@ void HFX::on_PushButtonSubmit_clicked()
             return;
         }
     }
-    update();
-    AllSheet.push_back(NewSheet);
+    update_income();
+    set_table_income(InNewSheet_);
+    InAllSheet_.push_back(InNewSheet_);
     /// 相应的变量变为true
-    Changed = false;
-    ui->PushButtonSubmit->setStyleSheet("color:green");
+    InChanged_ = false;
+    InSaved_ = false;
+    ui->PushButtonSubmitIncome->setStyleSheet("color:green");
 }
 
-void HFX::on_PushButtonSave_clicked()
+void HFX::on_PushButtonSaveIncome_clicked()
 {
-    if (!LoadFlag)
+    if (!InLoadFlag_)
     {
         auto reply = QMessageBox::question(this, "亲爱的稍等！", "旧文件还没有读取呢！\n 要读取之前的数据吗？", QMessageBox::Yes | QMessageBox::No);
         if (reply == QMessageBox::Yes)
         {
-            on_PushButtonRead_clicked();
+            on_PushButtonReadIncome_clicked();
             return;
         }
     }
 
-    // 读取存储路径
-    std::string SavePath = ui->LineSavePath->text().toStdString();
-    if (SavePath.size() < 4)
-    {
-        MyMessageBox msg;
-        msg.setWindowTitle("亲爱的打扰一下哦！");
-        msg.setText("亲爱的,文件的路径是不是没选呀 \n选一下呗");
-        msg.setMySize(400, 180);
-        msg.addButton("好哒",QMessageBox::ActionRole);
-        msg.exec();
-        return;
-    }
-    else if (SavePath.substr(SavePath.size()-4, SavePath.size()) != ".csv")
-    {
-        MyMessageBox msg;
-        msg.setWindowTitle("亲爱的打扰一下哦！");
-        msg.setText("亲爱的,文件名是不是错啦 \n检查一下呗");
-        msg.setMySize(400, 180);
-        msg.addButton("好哒",QMessageBox::ActionRole);
-        msg.exec();
-        return;
-    }
-
     // 检查现有数据向量
-    if (AllSheet.size() == 0)
+    if (InAllSheet_.size() == 0)
     {
         MyMessageBox msg;
         msg.setWindowTitle("懒虫！！！");
@@ -270,15 +269,27 @@ void HFX::on_PushButtonSave_clicked()
         return;
     }
 
+    QString FileName;
+    QWidget *qwidget = new QWidget();
+    FileName = QFileDialog::getSaveFileName(qwidget, "亲爱的想存在哪呀", "", "CSV文件(*.csv)");
+    if (FileName == NULL)
+    {
+        return;
+    }
+
+    // 读取存储路径
+    std::string SavePath = FileName.toStdString();
+
     // 讲数据按照日期先后排序
-    sort(AllSheet.begin(), AllSheet.end(), sort_Sheet_Date);
+    auto AllSheetSave = InAllSheet_;
+    sort(AllSheetSave.begin(), AllSheetSave.end(), sort_Sheet_Date);
     // 初始化Python
     Py_SetPythonHome((const wchar_t *)(L"C:/Python38"));
     Py_Initialize();
 
     if (!Py_IsInitialized())
     {
-        ui->PushButtonSave->setStyleSheet("color:blue");
+        ui->PushButtonSaveIncome->setStyleSheet("color:blue");
         return;
     }
     PyObject * PModule = NULL;
@@ -300,17 +311,17 @@ void HFX::on_PushButtonSave_clicked()
     PyObject *PArgs = PyTuple_New(2);
     PyObject *PDict = PyDict_New();
 
-    for (unsigned int i = 0; i < AllSheet.size(); i++)
+    for (unsigned int i = 0; i < InAllSheet_.size(); i++)
     {
-        PyList_Append(NameList, Py_BuildValue("s", AllSheet[i].Name.data()));
-        PyList_Append(TypeList, Py_BuildValue("s", AllSheet[i].Type.data()));
-        PyList_Append(DateList, Py_BuildValue("i", AllSheet[i].Date));
-        PyList_Append(AmountList, Py_BuildValue("i", AllSheet[i].Amount));
-        PyList_Append(DealList, Py_BuildValue("i", AllSheet[i].Deal));
-        PyList_Append(DiscountList, Py_BuildValue("f", AllSheet[i].Discount));
-        PyList_Append(PriceList, Py_BuildValue("f", AllSheet[i].Price));
-        PyList_Append(PostList, Py_BuildValue("f", AllSheet[i].Post));
-        PyList_Append(TotalList, Py_BuildValue("l", AllSheet[i].Total));
+        PyList_Append(NameList, Py_BuildValue("s", InAllSheet_[i].Name.data()));
+        PyList_Append(TypeList, Py_BuildValue("s", InAllSheet_[i].Type.data()));
+        PyList_Append(DateList, Py_BuildValue("i", InAllSheet_[i].Date));
+        PyList_Append(AmountList, Py_BuildValue("i", InAllSheet_[i].Amount));
+        PyList_Append(DealList, Py_BuildValue("i", InAllSheet_[i].Deal));
+        PyList_Append(DiscountList, Py_BuildValue("f", InAllSheet_[i].Discount));
+        PyList_Append(PriceList, Py_BuildValue("f", InAllSheet_[i].Price));
+        PyList_Append(PostList, Py_BuildValue("f", InAllSheet_[i].Post));
+        PyList_Append(TotalList, Py_BuildValue("l", InAllSheet_[i].Total));
     }
 
     PyDict_SetItemString(PDict, "Name", NameList);
@@ -336,26 +347,16 @@ void HFX::on_PushButtonSave_clicked()
     msg.setMySize(400, 180);
     msg.addButton("好哒",QMessageBox::ActionRole);
     msg.exec();
+
+    InSaved_ = true;
 }
 
-void HFX::on_PushButtonSavePath_clicked()
+void HFX::on_SpinDiscountIncome_valueChanged()
 {
-    QString FileName;
-    QWidget *qwidget = new QWidget();
-    FileName = QFileDialog::getSaveFileName(qwidget, "亲爱的想存在哪呀", "", "CSV文件(*.csv)");
-    if (FileName == NULL)
-    {
-        return;
-    }
-    ui->LineSavePath->setText(FileName);
+    update_income();
 }
 
-void HFX::on_SpinDiscount_valueChanged()
-{
-    update();
-}
-
-void HFX::on_PushButtonRead_clicked()
+void HFX::on_PushButtonReadIncome_clicked()
 {
     std::string FileName;
     QWidget *qwidget = new QWidget();
@@ -371,7 +372,7 @@ void HFX::on_PushButtonRead_clicked()
 
     if (!Py_IsInitialized())
     {
-        ui->PushButtonRead->setStyleSheet("color:blue");
+        ui->PushButtonReadIncome->setStyleSheet("color:blue");
         return;
     }
 
@@ -399,22 +400,24 @@ void HFX::on_PushButtonRead_clicked()
 
     for (unsigned int i = 0; i < PyList_Size(NameList); i++)
     {
-        PyArg_Parse(PyList_GetItem(NameList, i), "s", &NewSheet.Name);
-        PyArg_Parse(PyList_GetItem(TypeList, i), "s", &NewSheet.Type);
-        PyArg_Parse(PyList_GetItem(DateList, i), "i", &NewSheet.Date);
-        PyArg_Parse(PyList_GetItem(AmountList, i), "i", &NewSheet.Amount);
-        PyArg_Parse(PyList_GetItem(DealList, i), "i", &NewSheet.Deal);
-        PyArg_Parse(PyList_GetItem(DiscountList, i), "f", &NewSheet.Discount);
-        PyArg_Parse(PyList_GetItem(PriceList, i), "f", &NewSheet.Price);
-        PyArg_Parse(PyList_GetItem(PostList, i), "f", &NewSheet.Post);
-        PyArg_Parse(PyList_GetItem(TotalList, i), "l", &NewSheet.Total);
-        AllSheet.push_back(NewSheet);
+        PyArg_Parse(PyList_GetItem(NameList, i), "s", &InNewSheet_.Name);
+        PyArg_Parse(PyList_GetItem(TypeList, i), "s", &InNewSheet_.Type);
+        PyArg_Parse(PyList_GetItem(DateList, i), "i", &InNewSheet_.Date);
+        PyArg_Parse(PyList_GetItem(AmountList, i), "i", &InNewSheet_.Amount);
+        PyArg_Parse(PyList_GetItem(DealList, i), "i", &InNewSheet_.Deal);
+        PyArg_Parse(PyList_GetItem(DiscountList, i), "f", &InNewSheet_.Discount);
+        PyArg_Parse(PyList_GetItem(PriceList, i), "f", &InNewSheet_.Price);
+        PyArg_Parse(PyList_GetItem(PostList, i), "f", &InNewSheet_.Post);
+        PyArg_Parse(PyList_GetItem(TotalList, i), "l", &InNewSheet_.Total);
+
+        set_table_income(InNewSheet_);
+        InAllSheet_.push_back(InNewSheet_);
     }
 
     Py_Finalize();
 
-    LoadFlag = true;
-    ui->PushButtonRead->setStyleSheet("color:green");
+    InLoadFlag_ = true;
+    ui->PushButtonReadIncome->setStyleSheet("color:green");
 
     MyMessageBox msg;
     msg.setWindowTitle("亲爱的真棒！");
@@ -422,4 +425,105 @@ void HFX::on_PushButtonRead_clicked()
     msg.setMySize(400, 180);
     msg.addButton("好哒",QMessageBox::ActionRole);
     msg.exec();
+}
+
+void HFX::on_pushButtonDeletIncome_clicked()
+{
+    QList<QTableWidgetItem*> items = ui->tableWidgetIncome->selectedItems();
+    // 获取选取的行号
+    std::vector<int> SelectedRows;
+    for (int i = 0; i < items.count(); i++)
+    {
+        int row = ui->tableWidgetIncome->row(items.at(i));
+        if (i == 0)
+        {
+            SelectedRows.push_back(row);
+            continue;
+        }
+
+        else if (row != *(SelectedRows.end()-1))
+        {
+            SelectedRows.push_back(row);
+        }
+    }
+    // 删去被选中的行
+    int Count = 0;
+    for (const auto row : SelectedRows)
+    {
+        ui->tableWidgetIncome->removeRow(row - Count);
+        InAllSheet_.erase(InAllSheet_.begin() + row - Count);
+        Count ++;
+    }
+
+    InSaved_ = false;
+}
+
+void HFX::closeEvent(QCloseEvent *event)
+{
+    if (InSaved_)
+    {
+        event->accept();
+        return;
+    }
+
+    auto reply = QMessageBox::question(this, "亲爱的稍等！", "更改的表格还没有存储呢！\n 要存储后再退出吗？", QMessageBox::Yes | QMessageBox::Cancel | QMessageBox::No);
+    if (reply == QMessageBox::Yes)
+    {
+        on_PushButtonSaveIncome_clicked();
+    }
+    else if (reply == QMessageBox::Cancel)
+    {
+        event->ignore();
+        return;
+    }
+
+    event->accept();
+}
+
+void HFX::on_tableWidgetIncome_itemDoubleClicked(QTableWidgetItem *item)
+{
+    InIsEdit_ = true;
+    ui->tableWidgetIncome->editItem(item);
+}
+
+void HFX::on_tableWidgetIncome_itemChanged(QTableWidgetItem *item)
+{
+    if (!InIsEdit_)
+    {
+        return;
+    }
+    int row = ui->tableWidgetIncome->row(item);
+    int column = ui->tableWidgetIncome->column(item);
+    switch (column)
+    {
+    case 0:
+        InAllSheet_[row].Date = item->data(Qt::DisplayRole).toInt();
+        break;
+    case 1:
+        InAllSheet_[row].Name = item->data(Qt::DisplayRole).toString().toStdString();
+        break;
+    case 2:
+        InAllSheet_[row].Type = item->data(Qt::DisplayRole).toString().toStdString();
+        break;
+    case 3:
+        InAllSheet_[row].Price = item->data(Qt::DisplayRole).toFloat();
+        break;
+    case 4:
+        InAllSheet_[row].Amount = item->data(Qt::DisplayRole).toInt();
+        break;
+    case 5:
+        InAllSheet_[row].Deal = item->data(Qt::DisplayRole).toInt();
+        break;
+    case 6:
+        InAllSheet_[row].Discount = item->data(Qt::DisplayRole).toFloat();
+        break;
+    case 7:
+        InAllSheet_[row].Post = item->data(Qt::DisplayRole).toFloat();
+        break;
+    case 8:
+        InAllSheet_[row].Total = item->data(Qt::DisplayRole).toFloat();
+    }
+
+    InSaved_ = false;
+    InIsEdit_ = false;
 }
