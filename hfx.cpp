@@ -96,7 +96,7 @@ bool sort_Sheet_Date(const Sheet &p1, const Sheet &p2)
 
 HFX::HFX(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::HFX), LoadFlag(false), Changed(true)
+    , ui(new Ui::HFX), LoadFlag(false), Changed(true), OutLoaded_{false}, OutChanged_{true}
 {
     ui->setupUi(this);
     const QString NowType = ui->ComboType->currentText();

@@ -14,7 +14,6 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class HFX; }
 QT_END_NAMESPACE
 
-
 /// 保存账单信息的结构
 ///   Name: 购买人名字
 ///   Type: 购买茶的种类
@@ -104,9 +103,18 @@ private slots:
 
 private:
     Ui::HFX *ui;
-    /// 实时的表单数据
+    /// 收入面板变量
+    // 实时的表单数据
     Sheet NewSheet;
     std::vector<Sheet> AllSheet;
     bool LoadFlag, Changed;
+
+    /// 支出面板变量
+    // 实时表单数据
+    Sheet OutNewSheet_;
+    // 所有表单数据
+    std::vector<Sheet> OutAllSheet_;
+    // 状态标志
+    bool OutLoaded_, OutChanged_;
 };
 #endif // HFX_H
