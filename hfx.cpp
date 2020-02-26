@@ -1,7 +1,6 @@
 #include "hfx.h"
 #include "ui_hfx.h"
 #include "Python.h"
-
 MyMessageBox::MyMessageBox(QWidget *parent) :
     QMessageBox(parent), width_(0), length_(0)
 {
@@ -103,13 +102,17 @@ HFX::HFX(QWidget *parent)
     set_price(NowType);
     ui->PushButtonRead->setStyleSheet("color:red");
     update();
+
+    /// 支出表格
+    ui->PushButtonSubmitOutcome->setStyleSheet("color:red");
+    ui->LineEditOutcomeNote->setReadOnly(true);
+    ui->LineEditOutcomeNote->setStyleSheet("background-color:rgb(125,125,125)");
 }
 
 HFX::~HFX()
 {
     delete ui;
 }
-
 void HFX::set_price(const QString &TypeName)
 {
     // 自动根据商品种类更改商品单价
@@ -418,4 +421,66 @@ void HFX::on_PushButtonRead_clicked()
     msg.setMySize(400, 180);
     msg.addButton("好哒",QMessageBox::ActionRole);
     msg.exec();
+}
+
+/// 支出表格
+
+void HFX::update_outcome()
+{
+    /// 读取表格信息
+    OutNewSheet_.Date = ui->SpinBoxDateOutcome->text().toInt();
+    OutNewSheet_.Price = ui->SpinBoxPriceOutcome->text().toFloat();
+
+    QString TypeOutcome = ui->ComboBoxTypeOutcome->currentText();
+    if (TypeOutcome == QString("其他"))
+    {
+        OutNewSheet_.Type = ui->LineEditOutcomeNote->text().toStdString();
+    }
+    else
+    {
+        OutNewSheet_.Type = TypeOutcome.toStdString();
+    }
+
+    /// 数据有变化后提交按钮的字体颜色变红
+    /// 改变相应的状态变量
+    OutChanged_ = true;
+    ui->PushButtonSubmitOutcome->setStyleSheet("color:red");
+}
+
+void HFX::outcome_status_changed()
+{
+    OutChanged_ = true;
+    ui->PushButtonSubmitOutcome->setStyleSheet("color:red");
+}
+
+void HFX::on_SpinBoxDateOutcome_valueChanged()
+{
+    OutNewSheet_.Date = ui->SpinBoxDateOutcome->text().toInt();
+
+    outcome_status_changed();
+}
+
+void HFX::on_ComboBoxTypeOutcome_currentTextChanged(const QString &arg1)
+{
+    if (arg1 == QString("其他"))
+    {
+        ui->LineEditOutcomeNote->setReadOnly(false);
+        ui->LineEditOutcomeNote->setStyleSheet("background-color:rgb(255,255,255)");
+        OutNewSheet_.Type = ui->LineEditOutcomeNote->text().toStdString();
+    }
+    else
+    {
+        ui->LineEditOutcomeNote->setReadOnly(true);
+        ui->LineEditOutcomeNote->setStyleSheet("background-color:rgb(125,125,125)");
+        OutNewSheet_.Type = arg1.toStdString();
+    }
+
+    outcome_status_changed();
+}
+
+void HFX::on_SpinBoxPriceOutcome_valueChanged(double arg1)
+{
+    OutNewSheet_.Price = arg1;
+
+    outcome_status_changed();
 }

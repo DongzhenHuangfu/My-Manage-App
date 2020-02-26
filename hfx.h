@@ -75,6 +75,7 @@ public:
     /// 按照表格更新数据，计算总价数额
     void update();
     void set_price(const QString &TypeName);
+    void update_outcome();
 
 private slots:
     void on_ComboType_currentIndexChanged(const QString &TypeName);
@@ -100,6 +101,16 @@ private slots:
     void on_SpinDiscount_valueChanged();
 
     void on_PushButtonRead_clicked();
+
+    /// 支出表格
+    void on_SpinBoxDateOutcome_valueChanged();
+
+    void on_ComboBoxTypeOutcome_currentTextChanged(const QString &arg1);
+
+    void on_SpinBoxPriceOutcome_valueChanged(double arg1);
+
+    // 当支出表单数据有改变的时候做出的反应
+    void outcome_status_changed();
 
 private:
     Ui::HFX *ui;
