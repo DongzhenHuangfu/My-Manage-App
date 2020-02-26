@@ -743,7 +743,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QComboBox" name="comboBox">
+             <widget class="QComboBox" name="ComboBoxTypeOutcome">
               <item>
                <property name="text">
                 <string>药材</string>
@@ -801,6 +801,19 @@
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_11">
             <item>
+             <spacer name="horizontalSpacer_18">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
              <widget class="QPushButton" name="PushButtonSubmitOutcome">
               <property name="text">
                <string>提交</string>
@@ -819,16 +832,6 @@
                </size>
               </property>
              </spacer>
-            </item>
-            <item>
-             <widget class="QLabel" name="LabelTotalOutcome">
-              <property name="text">
-               <string>总价</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="LineEditOutcome"/>
             </item>
            </layout>
           </item>
