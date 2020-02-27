@@ -594,3 +594,91 @@ void HFX::on_PushButtonReadOutcome_clicked()
     msg.addButton("好哒",QMessageBox::ActionRole);
     msg.exec();
 }
+
+void HFX::on_PushButtonSaveOutcome_clicked()
+{
+    if (!OutLoaded_)
+    {
+        auto reply = QMessageBox::question(this, "亲爱的稍等！", "旧文件还没有读取呢！\n 要读取之前的数据吗？", QMessageBox::Yes | QMessageBox::No);
+        if (reply == QMessageBox::Yes)
+        {
+            on_PushButtonReadOutcome_clicked();
+            return;
+        }
+    }
+
+    // 检查现有数据向量
+    if (OutAllSheet_.size() == 0)
+    {
+        MyMessageBox msg;
+        msg.setWindowTitle("懒虫！！！");
+        msg.setText("亲爱的,你没有输入数据呢还！ \n快填！！");
+        msg.setMySize(400, 180);
+        msg.addButton("好哒",QMessageBox::ActionRole);
+        msg.exec();
+        return;
+    }
+
+    QString FileName;
+    QWidget *qwidget = new QWidget();
+    FileName = QFileDialog::getSaveFileName(qwidget, "亲爱的想存在哪呀", "", "CSV文件(*.csv)");
+    if (FileName == NULL)
+    {
+        return;
+    }
+
+    // 读取存储路径
+    std::string SavePath = FileName.toStdString();
+
+    // 讲数据按照日期先后排序
+    auto AllSheetSave = OutAllSheet_;
+    sort(AllSheetSave.begin(), AllSheetSave.end(), sort_Sheet_Date);
+    // 初始化Python
+    Py_SetPythonHome((const wchar_t *)(L"C:/Python38"));
+    Py_Initialize();
+
+    if (!Py_IsInitialized())
+    {
+        ui->PushButtonSaveOutcome->setStyleSheet("color:blue");
+        return;
+    }
+    PyObject * PModule = NULL;
+    PyObject * PFunc = NULL;
+    PModule =PyImport_ImportModule("handle_data");
+    PFunc= PyObject_GetAttrString(PModule, "save_outcome");
+
+    // 将数据转换成Python的输入
+    PyObject *TypeList = PyList_New(0);
+    PyObject *DateList = PyList_New(0);
+    PyObject *PriceList = PyList_New(0);
+
+    PyObject *PArgs = PyTuple_New(2);
+    PyObject *PDict = PyDict_New();
+
+    for (unsigned int i = 0; i < OutAllSheet_.size(); i++)
+    {
+        PyList_Append(TypeList, Py_BuildValue("s", OutAllSheet_[i].Type.data()));
+        PyList_Append(DateList, Py_BuildValue("i", OutAllSheet_[i].Date));
+        PyList_Append(PriceList, Py_BuildValue("f", OutAllSheet_[i].Price));
+    }
+
+    PyDict_SetItemString(PDict, "Type", TypeList);
+    PyDict_SetItemString(PDict, "Date", DateList);
+    PyDict_SetItemString(PDict, "Price", PriceList);
+
+    PyTuple_SetItem(PArgs, 0, Py_BuildValue("s", SavePath.data()));
+    PyTuple_SetItem(PArgs, 1, PDict);
+
+    PyEval_CallObject(PFunc, PArgs);
+
+    Py_Finalize();
+
+    MyMessageBox msg;
+    msg.setWindowTitle("亲爱的辛苦了！");
+    msg.setText("保存成功！");
+    msg.setMySize(400, 180);
+    msg.addButton("好哒",QMessageBox::ActionRole);
+    msg.exec();
+
+    OutSaved_ = true;
+}

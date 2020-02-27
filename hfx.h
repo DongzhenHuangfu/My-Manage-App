@@ -119,6 +119,8 @@ private slots:
 
     void on_PushButtonReadOutcome_clicked();
 
+    void on_PushButtonSaveOutcome_clicked();
+
 private:
     Ui::HFX *ui;
     /// 收入面板变量
