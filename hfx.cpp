@@ -514,3 +514,10 @@ void HFX::on_PushButtonSubmitOutcome_clicked()
     OutChanged_ = false;
     ui->PushButtonSubmitOutcome->setStyleSheet("color:green");
 }
+
+void HFX::on_LineEditOutcomeNote_textChanged(const QString &arg1)
+{
+    OutNewSheet_.Type = arg1.toStdString();
+
+    outcome_status_changed();
+}

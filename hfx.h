@@ -114,6 +114,8 @@ private slots:
 
     void on_PushButtonSubmitOutcome_clicked();
 
+    void on_LineEditOutcomeNote_textChanged(const QString &arg1);
+
 private:
     Ui::HFX *ui;
     /// 收入面板变量
