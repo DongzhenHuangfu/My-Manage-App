@@ -729,6 +729,18 @@
                 <height>0</height>
                </size>
               </property>
+              <property name="layoutDirection">
+               <enum>Qt::LeftToRight</enum>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+              <property name="minimum">
+               <number>20190000</number>
+              </property>
+              <property name="maximum">
+               <number>21190000</number>
+              </property>
              </widget>
             </item>
            </layout>
@@ -770,6 +782,12 @@
              <widget class="QLineEdit" name="LineEditOutcomeNote">
               <property name="layoutDirection">
                <enum>Qt::RightToLeft</enum>
+              </property>
+              <property name="autoFillBackground">
+               <bool>false</bool>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
              </widget>
             </item>
