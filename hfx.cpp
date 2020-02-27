@@ -498,7 +498,7 @@ void HFX::set_table_outcome(Sheet NowSheet)
 
     ui->TableOutcome->setItem(OutAllSheet_.size(), 0, new QTableWidgetItem(QString::number(NowSheet.Date)));
     ui->TableOutcome->setItem(OutAllSheet_.size(), 1, new QTableWidgetItem(NowSheet.Type.data()));
-    ui->TableOutcome->setItem(OutAllSheet_.size(), 3, new QTableWidgetItem(QString::number(NowSheet.Price)));
+    ui->TableOutcome->setItem(OutAllSheet_.size(), 2, new QTableWidgetItem(QString::number(NowSheet.Price)));
 
     ui->TableOutcome->resizeColumnsToContents();
     ui->TableOutcome->resizeRowsToContents();
