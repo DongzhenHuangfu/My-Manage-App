@@ -706,7 +706,7 @@
            </spacer>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButtonReadOutcome">
+           <widget class="QPushButton" name="PushButtonReadOutcome">
             <property name="text">
              <string> 读取表格</string>
             </property>

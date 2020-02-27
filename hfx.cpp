@@ -95,7 +95,7 @@ bool sort_Sheet_Date(const Sheet &p1, const Sheet &p2)
 
 HFX::HFX(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::HFX), LoadFlag(false), Changed(true), OutLoaded_{false}, OutChanged_{true}
+    , ui(new Ui::HFX), LoadFlag(false), Changed(true), OutLoaded_{false}, OutChanged_{true}, OutSaved_{false}
 {
     ui->setupUi(this);
     const QString NowType = ui->ComboType->currentText();
@@ -111,6 +111,8 @@ HFX::HFX(QWidget *parent)
     ui->TableOutcome->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->TableOutcome->resizeColumnsToContents();
     ui->TableOutcome->resizeRowsToContents();
+
+    ui->PushButtonReadOutcome->setStyleSheet("color:red");
 
     update_outcome();
 }
@@ -490,6 +492,18 @@ void HFX::on_SpinBoxPriceOutcome_valueChanged(double arg1)
     outcome_status_changed();
 }
 
+void HFX::set_table_outcome(Sheet NowSheet)
+{
+    ui->TableOutcome->insertRow(OutAllSheet_.size());
+
+    ui->TableOutcome->setItem(OutAllSheet_.size(), 0, new QTableWidgetItem(QString::number(NowSheet.Date)));
+    ui->TableOutcome->setItem(OutAllSheet_.size(), 1, new QTableWidgetItem(NowSheet.Type.data()));
+    ui->TableOutcome->setItem(OutAllSheet_.size(), 3, new QTableWidgetItem(QString::number(NowSheet.Price)));
+
+    ui->TableOutcome->resizeColumnsToContents();
+    ui->TableOutcome->resizeRowsToContents();
+}
+
 void HFX::on_PushButtonSubmitOutcome_clicked()
 {
     if (!OutChanged_)
@@ -520,4 +534,63 @@ void HFX::on_LineEditOutcomeNote_textChanged(const QString &arg1)
     OutNewSheet_.Type = arg1.toStdString();
 
     outcome_status_changed();
+}
+
+void HFX::on_PushButtonReadOutcome_clicked()
+{
+    std::string FileName;
+    QWidget *qwidget = new QWidget();
+    QString QFileName = NULL;
+    QFileName = QFileDialog::getOpenFileName(qwidget, "亲爱的把上次的文件找出来好不好呀", "", "CSV文件(*.csv)");
+    if (QFileName == NULL)
+    {
+        return;
+    }
+    FileName = QFileName.toStdString();
+    Py_SetPythonHome((const wchar_t *)(L"C:/Python38"));
+    Py_Initialize();
+
+    if (!Py_IsInitialized())
+    {
+        ui->PushButtonReadOutcome->setStyleSheet("color:blue");
+        return;
+    }
+
+    PyObject *PModule = NULL;
+    PyObject *PFunc = NULL;
+    PyObject *PReturn = NULL;
+
+    PModule =PyImport_ImportModule("handle_data");
+    PFunc= PyObject_GetAttrString(PModule, "read_outcome");
+
+    PyObject *PArgs = PyTuple_New(1);
+    PyTuple_SetItem(PArgs, 0, Py_BuildValue("s", FileName.data()));
+
+    PReturn = PyEval_CallObject(PFunc, PArgs);
+
+    PyObject *TypeList = PyDict_GetItemString(PReturn, "Type");
+    PyObject *DateList = PyDict_GetItemString(PReturn, "Date");
+    PyObject *PriceList = PyDict_GetItemString(PReturn, "Price");
+
+    for (unsigned int i = 0; i < PyList_Size(TypeList); i++)
+    {
+        PyArg_Parse(PyList_GetItem(TypeList, i), "s", &OutNewSheet_.Type);
+        PyArg_Parse(PyList_GetItem(DateList, i), "i", &OutNewSheet_.Date);
+        PyArg_Parse(PyList_GetItem(PriceList, i), "f", &OutNewSheet_.Price);
+
+        set_table_outcome(OutNewSheet_);
+        OutAllSheet_.push_back(OutNewSheet_);
+    }
+
+    Py_Finalize();
+
+    OutLoaded_ = true;
+    ui->PushButtonReadOutcome->setStyleSheet("color:green");
+
+    MyMessageBox msg;
+    msg.setWindowTitle("亲爱的真棒！");
+    msg.setText("读取成功！");
+    msg.setMySize(400, 180);
+    msg.addButton("好哒",QMessageBox::ActionRole);
+    msg.exec();
 }

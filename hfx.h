@@ -76,6 +76,7 @@ public:
     void update();
     void set_price(const QString &TypeName);
     void update_outcome();
+    void set_table_outcome(Sheet NowSheet);
 
 private slots:
     void on_ComboType_currentIndexChanged(const QString &TypeName);
@@ -116,6 +117,8 @@ private slots:
 
     void on_LineEditOutcomeNote_textChanged(const QString &arg1);
 
+    void on_PushButtonReadOutcome_clicked();
+
 private:
     Ui::HFX *ui;
     /// 收入面板变量
@@ -130,6 +133,6 @@ private:
     // 所有表单数据
     std::vector<Sheet> OutAllSheet_;
     // 状态标志
-    bool OutLoaded_, OutChanged_;
+    bool OutLoaded_, OutChanged_, OutSaved_;
 };
 #endif // HFX_H
