@@ -107,6 +107,12 @@ HFX::HFX(QWidget *parent)
     ui->PushButtonSubmitOutcome->setStyleSheet("color:red");
     ui->LineEditOutcomeNote->setReadOnly(true);
     ui->LineEditOutcomeNote->setStyleSheet("background-color:rgb(125,125,125)");
+
+    ui->TableOutcome->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->TableOutcome->resizeColumnsToContents();
+    ui->TableOutcome->resizeRowsToContents();
+
+    update_outcome();
 }
 
 HFX::~HFX()
@@ -443,8 +449,7 @@ void HFX::update_outcome()
 
     /// 数据有变化后提交按钮的字体颜色变红
     /// 改变相应的状态变量
-    OutChanged_ = true;
-    ui->PushButtonSubmitOutcome->setStyleSheet("color:red");
+    outcome_status_changed();
 }
 
 void HFX::outcome_status_changed()
@@ -483,4 +488,29 @@ void HFX::on_SpinBoxPriceOutcome_valueChanged(double arg1)
     OutNewSheet_.Price = arg1;
 
     outcome_status_changed();
+}
+
+void HFX::on_PushButtonSubmitOutcome_clicked()
+{
+    if (!OutChanged_)
+    {
+        auto reply = QMessageBox::question(this, "亲爱的稍等！", "这个数据已经存过一次了！\n 要再存一次吗？", QMessageBox::Yes | QMessageBox::No);
+        if (reply == QMessageBox::No)
+        {
+            return;
+        }
+    }
+
+    ui->TableOutcome->insertRow(OutAllSheet_.size());
+    ui->TableOutcome->setItem(OutAllSheet_.size(), 0, new QTableWidgetItem(QString::number(OutNewSheet_.Date)));
+    ui->TableOutcome->setItem(OutAllSheet_.size(), 1, new QTableWidgetItem(QString(OutNewSheet_.Type.data())));
+    ui->TableOutcome->setItem(OutAllSheet_.size(), 2, new QTableWidgetItem(QString::number(OutNewSheet_.Price)));
+
+    ui->TableOutcome->resizeColumnsToContents();
+    ui->TableOutcome->resizeRowsToContents();
+
+    OutAllSheet_.push_back(OutNewSheet_);
+    /// 相应的变量变为true
+    OutChanged_ = false;
+    ui->PushButtonSubmitOutcome->setStyleSheet("color:green");
 }

@@ -112,6 +112,8 @@ private slots:
     // 当支出表单数据有改变的时候做出的反应
     void outcome_status_changed();
 
+    void on_PushButtonSubmitOutcome_clicked();
+
 private:
     Ui::HFX *ui;
     /// 收入面板变量
