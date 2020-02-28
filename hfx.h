@@ -16,7 +16,6 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class HFX; }
 QT_END_NAMESPACE
 
-
 /// 保存账单信息的结构
 ///   Name: 购买人名字
 ///   Type: 购买茶的种类
@@ -32,7 +31,7 @@ typedef struct
     int Date, Amount, Deal;
     float Price, Post, Discount;
     long Total;
-}InSheet;
+}Sheet;
 
 /// 定义排序规则：
 /// 日期从小到大，
@@ -43,14 +42,14 @@ typedef struct
 /// 若数量一样则赠送从小到大，
 /// 若赠送一样则折扣从小到大
 /// 若折扣一样则邮费从大到小
-bool sort_Sheet_Date(const InSheet &p1, const InSheet &p2);
-bool sort_Sheet_Name(const InSheet &p1, const InSheet &p2);
-bool sort_Sheet_Type(const InSheet &p1, const InSheet &p2);
-bool sort_Sheet_Price(const InSheet &p1, const InSheet &p2);
-bool sort_Sheet_Amount(const InSheet &p1, const InSheet &p2);
-bool sort_Sheet_Deal(const InSheet &p1, const InSheet &p2);
-bool sort_Sheet_Discount(const InSheet &p1, const InSheet &p2);
-bool sort_Sheet_Post(const InSheet &p1, const InSheet &p2);
+bool sort_Sheet_Date(const Sheet &p1, const Sheet &p2);
+bool sort_Sheet_Name(const Sheet &p1, const Sheet &p2);
+bool sort_Sheet_Type(const Sheet &p1, const Sheet &p2);
+bool sort_Sheet_Price(const Sheet &p1, const Sheet &p2);
+bool sort_Sheet_Amount(const Sheet &p1, const Sheet &p2);
+bool sort_Sheet_Deal(const Sheet &p1, const Sheet &p2);
+bool sort_Sheet_Discount(const Sheet &p1, const Sheet &p2);
+bool sort_Sheet_Post(const Sheet &p1, const Sheet &p2);
 
 class MyMessageBox : public QMessageBox
 {
@@ -76,9 +75,13 @@ public:
     ~HFX();
 
     /// 按照表格更新数据，计算总价数额
+    // 收入
     void update_income();
     void set_price_income(const QString &TypeName);
-    void set_table_income(InSheet NowSheet);
+    void set_table_income(Sheet NowSheet);
+    // 支出
+    void update_outcome();
+    void set_table_outcome(Sheet NowSheet);
 
 private slots:
     void on_ComboTypeIncome_currentIndexChanged(const QString &TypeName);
@@ -111,11 +114,44 @@ private slots:
 
     void on_tableWidgetIncome_itemChanged(QTableWidgetItem *item);
 
+    /// 支出表格
+    void on_SpinBoxDateOutcome_valueChanged();
+
+    void on_ComboBoxTypeOutcome_currentTextChanged(const QString &arg1);
+
+    void on_SpinBoxPriceOutcome_valueChanged(double arg1);
+
+    // 当支出表单数据有改变的时候做出的反应
+    void outcome_status_changed();
+
+    void on_PushButtonSubmitOutcome_clicked();
+
+    void on_LineEditOutcomeNote_textChanged(const QString &arg1);
+
+    void on_PushButtonReadOutcome_clicked();
+
+    void on_PushButtonSaveOutcome_clicked();
+
+    void on_PushButtonDeletOutcome_clicked();
+
+    void on_TableOutcome_itemDoubleClicked(QTableWidgetItem *item);
+
+    void on_TableOutcome_itemChanged(QTableWidgetItem *item);
+
 private:
     Ui::HFX *ui;
-    /// 实时的表单数据
-    InSheet InNewSheet_;
-    std::vector<InSheet> InAllSheet_;
+    /// 收入面板变量
+    // 实时的表单数据
+    Sheet InNewSheet_;
+    std::vector<Sheet> InAllSheet_;
     bool InLoadFlag_, InChanged_, InSaved_, InIsEdit_;
+
+    /// 支出面板变量
+    // 实时表单数据
+    Sheet OutNewSheet_;
+    // 所有表单数据
+    std::vector<Sheet> OutAllSheet_;
+    // 状态标志
+    bool OutLoaded_, OutChanged_, OutSaved_, OutIsEdit_;
 };
 #endif // HFX_H

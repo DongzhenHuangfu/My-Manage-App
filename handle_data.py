@@ -27,3 +27,24 @@ def read(ReadPath):
 			RetData["Post"].append(row[7])
 			RetData["Total"].append(row[8])
 	return RetData
+
+def read_outcome(ReadPath):
+	RetData = {"Date": [], "Type": [], "Price": []}
+	i = 0
+	with open(ReadPath, 'r', newline='') as CSVFile:
+		reader = csv.reader(CSVFile)
+		for row in reader:
+			if i == 0:
+				i += 1
+				continue
+			RetData["Date"].append(row[0])
+			RetData["Type"].append(row[1])
+			RetData["Price"].append(row[2])
+	return RetData
+
+def save_outcome(SavePath, SaveData):
+	with open(SavePath, 'w', newline='') as CSVFile:
+		writer = csv.writer(CSVFile)
+		writer.writerow(["日期", "类别", "价格"])
+		for i in range(len(SaveData["Type"])):
+			writer.writerow([SaveData["Date"][i], SaveData["Type"][i], SaveData["Price"][i]])
