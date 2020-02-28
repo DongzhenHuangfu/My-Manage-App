@@ -121,6 +121,8 @@ private slots:
 
     void on_PushButtonSaveOutcome_clicked();
 
+    void on_PushButtonDeletOutcome_clicked();
+
 private:
     Ui::HFX *ui;
     /// 收入面板变量

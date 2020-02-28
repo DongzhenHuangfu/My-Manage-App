@@ -682,3 +682,34 @@ void HFX::on_PushButtonSaveOutcome_clicked()
 
     OutSaved_ = true;
 }
+
+void HFX::on_PushButtonDeletOutcome_clicked()
+{
+    QList<QTableWidgetItem*> items = ui->TableOutcome->selectedItems();
+    // 获取选取的行号
+    std::vector<int> SelectedRows;
+    for (int i = 0; i < items.count(); i++)
+    {
+        int row = ui->TableOutcome->row(items.at(i));
+        if (i == 0)
+        {
+            SelectedRows.push_back(row);
+            continue;
+        }
+
+        else if (row != *(SelectedRows.end()-1))
+        {
+            SelectedRows.push_back(row);
+        }
+    }
+    // 删去被选中的行
+    int Count = 0;
+    for (const auto row : SelectedRows)
+    {
+        ui->TableOutcome->removeRow(row - Count);
+        OutAllSheet_.erase(OutAllSheet_.begin() + row - Count);
+        Count ++;
+    }
+
+    OutSaved_ = false;
+}
