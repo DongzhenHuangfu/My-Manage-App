@@ -6,6 +6,7 @@
 #include <QMainWindow>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QCloseEvent>
 #include <QTableWidgetItem>
 #include <vector>
 #include <string>
@@ -80,6 +81,8 @@ public:
     void set_table_outcome(Sheet NowSheet);
 
 private slots:
+    void closeEvent(QCloseEvent *event);
+
     void on_ComboType_currentIndexChanged(const QString &TypeName);
 
     void on_SpinPrice_valueChanged();
