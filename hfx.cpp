@@ -18,12 +18,12 @@ void MyMessageBox::setMySize(int width, int length)
     length_ = length;
 }
 
-bool sort_Sheet_Post(const InSheet &p1, const InSheet &p2)
+bool sort_Sheet_Post(const Sheet &p1, const Sheet &p2)
 {
     return p1.Post > p2.Post;
 }
 
-bool sort_Sheet_Deal(const InSheet &p1, const InSheet &p2)
+bool sort_Sheet_Deal(const Sheet &p1, const Sheet &p2)
 {
     if (p1.Deal == p2.Deal)
     {
@@ -32,7 +32,7 @@ bool sort_Sheet_Deal(const InSheet &p1, const InSheet &p2)
     return p1.Deal < p2.Deal;
 }
 
-bool sort_Sheet_Discount(const InSheet &p1, const InSheet &p2)
+bool sort_Sheet_Discount(const Sheet &p1, const Sheet &p2)
 {
     if (p1.Discount == p2.Discount)
     {
@@ -41,7 +41,7 @@ bool sort_Sheet_Discount(const InSheet &p1, const InSheet &p2)
     return p1.Discount > p2.Discount;
 }
 
-bool sort_Sheet_Amount(const InSheet &p1, const InSheet &p2)
+bool sort_Sheet_Amount(const Sheet &p1, const Sheet &p2)
 {
     if (p1.Amount == p2.Amount)
     {
@@ -50,7 +50,7 @@ bool sort_Sheet_Amount(const InSheet &p1, const InSheet &p2)
     return p1.Amount > p2.Amount;
 }
 
-bool sort_Sheet_Price(const InSheet &p1, const InSheet &p2)
+bool sort_Sheet_Price(const Sheet &p1, const Sheet &p2)
 {
     if(p1.Price == p2.Price)
     {
@@ -59,7 +59,7 @@ bool sort_Sheet_Price(const InSheet &p1, const InSheet &p2)
     return p1.Price > p2.Price;
 }
 
-bool sort_Sheet_Type(const InSheet &p1, const InSheet &p2)
+bool sort_Sheet_Type(const Sheet &p1, const Sheet &p2)
 {
     if (p1.Type.compare(p2.Type) == 0)
     {
@@ -72,7 +72,7 @@ bool sort_Sheet_Type(const InSheet &p1, const InSheet &p2)
     return true;
 }
 
-bool sort_Sheet_Name(const InSheet &p1, const InSheet &p2)
+bool sort_Sheet_Name(const Sheet &p1, const Sheet &p2)
 {
     if (p1.Name.compare(p2.Name) == 0)
     {
@@ -85,7 +85,7 @@ bool sort_Sheet_Name(const InSheet &p1, const InSheet &p2)
     return true;
 }
 
-bool sort_Sheet_Date(const InSheet &p1, const InSheet &p2)
+bool sort_Sheet_Date(const Sheet &p1, const Sheet &p2)
 {
     if (p1.Date == p2.Date)
     {
@@ -209,7 +209,7 @@ void HFX::on_LineNameIncome_textChanged()
     ui->PushButtonSubmitIncome->setStyleSheet("color:red");
 }
 
-void HFX::set_table_income(InSheet NowSheet)
+void HFX::set_table_income(Sheet NowSheet)
 {
     ui->tableWidgetIncome->insertRow(InAllSheet_.size());
     ui->tableWidgetIncome->setItem(InAllSheet_.size(), 0, new QTableWidgetItem(QString::number(NowSheet.Date)));

@@ -32,7 +32,7 @@ typedef struct
     int Date, Amount, Deal;
     float Price, Post, Discount;
     long Total;
-}InSheet;
+}Sheet;
 
 /// 定义排序规则：
 /// 日期从小到大，
@@ -43,14 +43,14 @@ typedef struct
 /// 若数量一样则赠送从小到大，
 /// 若赠送一样则折扣从小到大
 /// 若折扣一样则邮费从大到小
-bool sort_Sheet_Date(const InSheet &p1, const InSheet &p2);
-bool sort_Sheet_Name(const InSheet &p1, const InSheet &p2);
-bool sort_Sheet_Type(const InSheet &p1, const InSheet &p2);
-bool sort_Sheet_Price(const InSheet &p1, const InSheet &p2);
-bool sort_Sheet_Amount(const InSheet &p1, const InSheet &p2);
-bool sort_Sheet_Deal(const InSheet &p1, const InSheet &p2);
-bool sort_Sheet_Discount(const InSheet &p1, const InSheet &p2);
-bool sort_Sheet_Post(const InSheet &p1, const InSheet &p2);
+bool sort_Sheet_Date(const Sheet &p1, const Sheet &p2);
+bool sort_Sheet_Name(const Sheet &p1, const Sheet &p2);
+bool sort_Sheet_Type(const Sheet &p1, const Sheet &p2);
+bool sort_Sheet_Price(const Sheet &p1, const Sheet &p2);
+bool sort_Sheet_Amount(const Sheet &p1, const Sheet &p2);
+bool sort_Sheet_Deal(const Sheet &p1, const Sheet &p2);
+bool sort_Sheet_Discount(const Sheet &p1, const Sheet &p2);
+bool sort_Sheet_Post(const Sheet &p1, const Sheet &p2);
 
 class MyMessageBox : public QMessageBox
 {
@@ -78,7 +78,7 @@ public:
     /// 按照表格更新数据，计算总价数额
     void update_income();
     void set_price_income(const QString &TypeName);
-    void set_table_income(InSheet NowSheet);
+    void set_table_income(Sheet NowSheet);
 
 private slots:
     void on_ComboTypeIncome_currentIndexChanged(const QString &TypeName);
@@ -114,8 +114,8 @@ private slots:
 private:
     Ui::HFX *ui;
     /// 实时的表单数据
-    InSheet InNewSheet_;
-    std::vector<InSheet> InAllSheet_;
+    Sheet InNewSheet_;
+    std::vector<Sheet> InAllSheet_;
     bool InLoadFlag_, InChanged_, InSaved_, InIsEdit_;
 };
 #endif // HFX_H
