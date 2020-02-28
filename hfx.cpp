@@ -96,7 +96,7 @@ bool sort_Sheet_Date(const Sheet &p1, const Sheet &p2)
 
 HFX::HFX(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::HFX), InLoadFlag_(false), InSaved_(false), InIsEdit_(false)
+    , ui(new Ui::HFX), InLoadFlag_(false), InSaved_(true), InIsEdit_(false)
 {
     ui->setupUi(this);
     ui->tableWidgetIncome->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -104,8 +104,6 @@ HFX::HFX(QWidget *parent)
     set_price_income(NowType);
     ui->PushButtonReadIncome->setStyleSheet("color:red");
     update_income();
-    InChanged_ = false;
-    ui->PushButtonSubmitIncome->setStyleSheet("color:green");
     ui->tableWidgetIncome->resizeColumnsToContents();
     ui->tableWidgetIncome->resizeRowsToContents();
 }
