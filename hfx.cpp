@@ -95,7 +95,7 @@ bool sort_Sheet_Date(const Sheet &p1, const Sheet &p2)
 
 HFX::HFX(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::HFX), LoadFlag(false), Changed(true), OutLoaded_{false}, OutChanged_{true}, OutSaved_{false},
+    , ui(new Ui::HFX), LoadFlag(false), Changed(true), OutLoaded_{false}, OutSaved_{false},
       OutIsEdit_{false}
 {
     ui->setupUi(this);
@@ -112,10 +112,11 @@ HFX::HFX(QWidget *parent)
     ui->TableOutcome->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->TableOutcome->resizeColumnsToContents();
     ui->TableOutcome->resizeRowsToContents();
-
     ui->PushButtonReadOutcome->setStyleSheet("color:red");
 
     update_outcome();
+    ui->PushButtonSubmitOutcome->setStyleSheet("color:green");
+    OutChanged_ = false;
 }
 
 HFX::~HFX()
