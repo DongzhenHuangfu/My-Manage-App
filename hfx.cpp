@@ -95,7 +95,8 @@ bool sort_Sheet_Date(const Sheet &p1, const Sheet &p2)
 
 HFX::HFX(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::HFX), LoadFlag(false), Changed(true), OutLoaded_{false}, OutChanged_{true}, OutSaved_{false}
+    , ui(new Ui::HFX), LoadFlag(false), Changed(true), OutLoaded_{false}, OutChanged_{true}, OutSaved_{false},
+      OutIsEdit_{false}
 {
     ui->setupUi(this);
     const QString NowType = ui->ComboType->currentText();
@@ -717,4 +718,34 @@ void HFX::on_PushButtonDeletOutcome_clicked()
     }
 
     OutSaved_ = false;
+}
+
+void HFX::on_TableOutcome_itemDoubleClicked(QTableWidgetItem *item)
+{
+    OutIsEdit_ = true;
+    ui->TableOutcome->editItem(item);
+}
+
+void HFX::on_TableOutcome_itemChanged(QTableWidgetItem *item)
+{
+    if (!OutIsEdit_)
+    {
+        return;
+    }
+    int row = ui->TableOutcome->row(item);
+    int column = ui->TableOutcome->column(item);
+    switch (column)
+    {
+    case 0:
+        OutAllSheet_[row].Date = item->data(Qt::DisplayRole).toInt();
+        break;
+    case 1:
+        OutAllSheet_[row].Type = item->data(Qt::DisplayRole).toString().toStdString();
+        break;
+    case 2:
+        OutAllSheet_[row].Price = item->data(Qt::DisplayRole).toFloat();
+    }
+
+    OutSaved_ = false;
+    OutIsEdit_ = false;
 }

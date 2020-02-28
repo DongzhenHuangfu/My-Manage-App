@@ -6,6 +6,7 @@
 #include <QMainWindow>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QTableWidgetItem>
 #include <vector>
 #include <string>
 #include <iostream>
@@ -123,6 +124,10 @@ private slots:
 
     void on_PushButtonDeletOutcome_clicked();
 
+    void on_TableOutcome_itemDoubleClicked(QTableWidgetItem *item);
+
+    void on_TableOutcome_itemChanged(QTableWidgetItem *item);
+
 private:
     Ui::HFX *ui;
     /// 收入面板变量
@@ -137,6 +142,6 @@ private:
     // 所有表单数据
     std::vector<Sheet> OutAllSheet_;
     // 状态标志
-    bool OutLoaded_, OutChanged_, OutSaved_;
+    bool OutLoaded_, OutChanged_, OutSaved_, OutIsEdit_;
 };
 #endif // HFX_H
