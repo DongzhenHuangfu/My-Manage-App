@@ -416,6 +416,17 @@ void HFX::on_PushButtonReadIncome_clicked()
 
     Py_Finalize();
 
+    if (InChanged_)
+    {
+        update_income();
+    }
+    else
+    {
+        update_income();
+        InChanged_ = false;
+        ui->PushButtonSubmit->setStyleSheet("color:green");
+    }
+
     InLoadFlag_ = true;
     ui->PushButtonReadIncome->setStyleSheet("color:green");
 
