@@ -592,6 +592,12 @@ void HFX::on_PushButtonReadOutcome_clicked()
     {
         update_outcome();
     }
+    else
+    {
+        update_outcome();
+        OutChanged_ = false;
+        ui->PushButtonSubmitOutcome->setStyleSheet("color:green");
+    }
 
     MyMessageBox msg;
     msg.setWindowTitle("亲爱的真棒！");
