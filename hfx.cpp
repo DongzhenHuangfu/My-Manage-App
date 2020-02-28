@@ -587,6 +587,11 @@ void HFX::on_PushButtonReadOutcome_clicked()
     OutLoaded_ = true;
     ui->PushButtonReadOutcome->setStyleSheet("color:green");
 
+    if (OutChanged_)
+    {
+        update_outcome();
+    }
+
     MyMessageBox msg;
     msg.setWindowTitle("亲爱的真棒！");
     msg.setText("读取成功！");
