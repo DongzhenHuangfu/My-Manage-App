@@ -424,7 +424,7 @@ void HFX::on_PushButtonReadIncome_clicked()
     {
         update_income();
         InChanged_ = false;
-        ui->PushButtonSubmit->setStyleSheet("color:green");
+        ui->PushButtonSubmitIncome->setStyleSheet("color:green");
     }
 
     InLoadFlag_ = true;
