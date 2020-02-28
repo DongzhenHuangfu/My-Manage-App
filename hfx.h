@@ -84,6 +84,9 @@ public:
     void set_table_outcome(Sheet NowSheet);
 
 private slots:
+    void closeEvent(QCloseEvent *event);
+
+    /// 收入表格
     void on_ComboTypeIncome_currentIndexChanged(const QString &TypeName);
 
     void on_SpinPriceIncome_valueChanged();
@@ -108,11 +111,11 @@ private slots:
 
     void on_pushButtonDeletIncome_clicked();
 
-    void closeEvent(QCloseEvent *event);
-
     void on_tableWidgetIncome_itemDoubleClicked(QTableWidgetItem *item);
 
     void on_tableWidgetIncome_itemChanged(QTableWidgetItem *item);
+
+    bool unsaved_in();
 
     /// 支出表格
     void on_SpinBoxDateOutcome_valueChanged();
@@ -121,7 +124,6 @@ private slots:
 
     void on_SpinBoxPriceOutcome_valueChanged(double arg1);
 
-    // 当支出表单数据有改变的时候做出的反应
     void outcome_status_changed();
 
     void on_PushButtonSubmitOutcome_clicked();
@@ -137,6 +139,8 @@ private slots:
     void on_TableOutcome_itemDoubleClicked(QTableWidgetItem *item);
 
     void on_TableOutcome_itemChanged(QTableWidgetItem *item);
+
+    bool unsaved_out();
 
 private:
     Ui::HFX *ui;

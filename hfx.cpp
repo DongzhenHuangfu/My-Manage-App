@@ -96,7 +96,7 @@ bool sort_Sheet_Date(const Sheet &p1, const Sheet &p2)
 HFX::HFX(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::HFX), InLoadFlag_(false), InSaved_(true), InIsEdit_(false),
-      OutLoaded_{false}, OutSaved_{false}, OutIsEdit_{false}
+      OutLoaded_{false}, OutSaved_{true}, OutIsEdit_{false}
 {
     ui->setupUi(this);
     ui->tableWidgetIncome->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -118,8 +118,6 @@ HFX::HFX(QWidget *parent)
     ui->PushButtonReadOutcome->setStyleSheet("color:red");
 
     update_outcome();
-    ui->PushButtonSubmitOutcome->setStyleSheet("color:green");
-    OutChanged_ = false;
 }
 
 HFX::~HFX()
@@ -483,28 +481,6 @@ void HFX::on_pushButtonDeletIncome_clicked()
     InSaved_ = false;
 }
 
-void HFX::closeEvent(QCloseEvent *event)
-{
-    if (InSaved_)
-    {
-        event->accept();
-        return;
-    }
-
-    auto reply = QMessageBox::question(this, "亲爱的稍等！", "更改的表格还没有存储呢！\n 要存储后再退出吗？", QMessageBox::Yes | QMessageBox::Cancel | QMessageBox::No);
-    if (reply == QMessageBox::Yes)
-    {
-        on_PushButtonSaveIncome_clicked();
-    }
-    else if (reply == QMessageBox::Cancel)
-    {
-        event->ignore();
-        return;
-    }
-
-    event->accept();
-}
-
 void HFX::on_tableWidgetIncome_itemDoubleClicked(QTableWidgetItem *item)
 {
     InIsEdit_ = true;
@@ -551,6 +527,21 @@ void HFX::on_tableWidgetIncome_itemChanged(QTableWidgetItem *item)
 
     InSaved_ = false;
     InIsEdit_ = false;
+}
+
+bool HFX::unsaved_in()
+{
+    auto reply = QMessageBox::question(this, "亲爱的稍等！", "更改的收入表格还没有存储呢！\n 要存储后再退出吗？", QMessageBox::Yes | QMessageBox::Cancel | QMessageBox::No);
+    if (reply == QMessageBox::Yes)
+    {
+        on_PushButtonSaveOutcome_clicked();
+    }
+    else if (reply == QMessageBox::Cancel)
+    {
+        return false;
+    }
+
+    return true;
 }
 
 /// 支出表格
@@ -649,6 +640,7 @@ void HFX::on_PushButtonSubmitOutcome_clicked()
     /// 相应的变量变为true
     OutChanged_ = false;
     ui->PushButtonSubmitOutcome->setStyleSheet("color:green");
+    OutSaved_ = false;
 }
 
 void HFX::on_LineEditOutcomeNote_textChanged(const QString &arg1)
@@ -726,6 +718,8 @@ void HFX::on_PushButtonReadOutcome_clicked()
     msg.setMySize(400, 180);
     msg.addButton("好哒",QMessageBox::ActionRole);
     msg.exec();
+
+    OutSaved_ = false;
 }
 
 void HFX::on_PushButtonSaveOutcome_clicked()
@@ -876,3 +870,65 @@ void HFX::on_TableOutcome_itemChanged(QTableWidgetItem *item)
     OutSaved_ = false;
     OutIsEdit_ = false;
 }
+
+bool HFX::unsaved_out()
+{
+    auto reply = QMessageBox::question(this, "亲爱的稍等！", "更改的支出表格还没有存储呢！\n 要存储后再退出吗？", QMessageBox::Yes | QMessageBox::Cancel | QMessageBox::No);
+    if (reply == QMessageBox::Yes)
+    {
+        on_PushButtonSaveOutcome_clicked();
+    }
+    else if (reply == QMessageBox::Cancel)
+    {
+        return false;
+    }
+
+    return true;
+}
+
+void HFX::closeEvent(QCloseEvent *event)
+{
+    if (OutSaved_ && InSaved_)
+    {
+        event->accept();
+        return;
+    }
+
+    else if (!OutSaved_ && !InSaved_)
+    {
+        if (unsaved_in() && unsaved_out())
+        {
+            event->accept();
+        }
+        else
+        {
+            event->ignore();
+        }
+    }
+
+    else if (!OutSaved_)
+    {
+        auto ReplyOut = QMessageBox::question(this, "亲爱的稍等！", "更改的支出表格还没有存储呢！\n 要存储后再退出吗？", QMessageBox::Yes | QMessageBox::Cancel | QMessageBox::No);
+        if (unsaved_out())
+        {
+            event->accept();
+        }
+        else
+        {
+            event->ignore();
+        }
+    }
+    else
+    {
+        auto ReplyIn = QMessageBox::question(this, "亲爱的稍等！", "更改的收入表格还没有存储呢！\n 要存储后再退出吗？", QMessageBox::Yes | QMessageBox::Cancel | QMessageBox::No);
+        if(unsaved_in())
+        {
+            event->accept();
+        }
+        else
+        {
+            event->ignore();
+        }
+    }
+}
+
