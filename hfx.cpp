@@ -95,7 +95,7 @@ bool sort_Sheet_Date(const Sheet &p1, const Sheet &p2)
 
 HFX::HFX(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::HFX), InLoadFlag_(false), InChanged_(true), InSaved_(false), InIsEdit_(false),
+    , ui(new Ui::HFX), InLoadFlag_(false), InSaved_(false), InIsEdit_(false),
       OutLoaded_{false}, OutSaved_{false}, OutIsEdit_{false}
 {
     ui->setupUi(this);
@@ -104,6 +104,8 @@ HFX::HFX(QWidget *parent)
     set_price_income(NowType);
     ui->PushButtonReadIncome->setStyleSheet("color:red");
     update_income();
+    InChanged_ = false;
+    ui->PushButtonSubmitIncome->setStyleSheet("color:green");
     ui->tableWidgetIncome->resizeColumnsToContents();
     ui->tableWidgetIncome->resizeRowsToContents();
 
@@ -429,6 +431,17 @@ void HFX::on_PushButtonReadIncome_clicked()
     }
 
     Py_Finalize();
+
+    if (InChanged_)
+    {
+        update_income();
+    }
+    else
+    {
+        update_income();
+        InChanged_ = false;
+        ui->PushButtonSubmitIncome->setStyleSheet("color:green");
+    }
 
     InLoadFlag_ = true;
     ui->PushButtonReadIncome->setStyleSheet("color:green");

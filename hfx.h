@@ -141,7 +141,6 @@ private slots:
 private:
     Ui::HFX *ui;
     /// 收入面板变量
-    // 实时的表单数据
     Sheet InNewSheet_;
     std::vector<Sheet> InAllSheet_;
     bool InLoadFlag_, InChanged_, InSaved_, InIsEdit_;
