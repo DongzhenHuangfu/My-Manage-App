@@ -908,7 +908,6 @@ void HFX::closeEvent(QCloseEvent *event)
 
     else if (!OutSaved_)
     {
-        auto ReplyOut = QMessageBox::question(this, "亲爱的稍等！", "更改的支出表格还没有存储呢！\n 要存储后再退出吗？", QMessageBox::Yes | QMessageBox::Cancel | QMessageBox::No);
         if (unsaved_out())
         {
             event->accept();
@@ -920,7 +919,6 @@ void HFX::closeEvent(QCloseEvent *event)
     }
     else
     {
-        auto ReplyIn = QMessageBox::question(this, "亲爱的稍等！", "更改的收入表格还没有存储呢！\n 要存储后再退出吗？", QMessageBox::Yes | QMessageBox::Cancel | QMessageBox::No);
         if(unsaved_in())
         {
             event->accept();
