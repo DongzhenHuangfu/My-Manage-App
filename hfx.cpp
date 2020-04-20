@@ -117,6 +117,9 @@ HFX::HFX(QWidget *parent)
     ui->TableOutcome->resizeRowsToContents();
     ui->PushButtonReadOutcome->setStyleSheet("color:red");
 
+    /// 总表头
+    ui->PushButtonUpdate->setStyleSheet("color:red");
+
     update_outcome();
 }
 
@@ -255,6 +258,9 @@ void HFX::on_PushButtonSubmitIncome_clicked()
     InChanged_ = false;
     InSaved_ = false;
     ui->PushButtonSubmitIncome->setStyleSheet("color:green");
+
+    /// 提交后总表头的刷新按钮变红
+    ui->PushButtonUpdate->setStyleSheet("color:red");
 }
 
 void HFX::on_PushButtonSaveIncome_clicked()
@@ -641,6 +647,9 @@ void HFX::on_PushButtonSubmitOutcome_clicked()
     OutChanged_ = false;
     ui->PushButtonSubmitOutcome->setStyleSheet("color:green");
     OutSaved_ = false;
+
+    /// 提交后总表头的刷新按钮变红
+    ui->PushButtonUpdate->setStyleSheet("color:red");
 }
 
 void HFX::on_LineEditOutcomeNote_textChanged(const QString &arg1)
@@ -930,3 +939,22 @@ void HFX::closeEvent(QCloseEvent *event)
     }
 }
 
+
+void HFX::on_PushButtonUpdate_clicked()
+{
+    TotalIncome_ = 0;
+    TotalOutcome_ = 0;
+
+    for (const auto item : InAllSheet_){
+        TotalIncome_ += item.Total;
+    }
+
+    for (const auto item : OutAllSheet_){
+        TotalOutcome_ += item.Price;
+    }
+    ui->LineEditGrossAll->setText(QString("%1").arg(TotalIncome_));
+    ui->LineEditOutAll->setText(QString("%1").arg(TotalOutcome_));
+    ui->LineEditNetAll->setText(QString("%1").arg(TotalIncome_ - TotalOutcome_));
+
+    ui->PushButtonUpdate->setStyleSheet("color:green");
+}

@@ -142,6 +142,9 @@ private slots:
 
     bool unsaved_out();
 
+    /// 总表头
+    void on_PushButtonUpdate_clicked();
+
 private:
     Ui::HFX *ui;
     /// 收入面板变量
@@ -156,5 +159,9 @@ private:
     std::vector<Sheet> OutAllSheet_;
     // 状态标志
     bool OutLoaded_, OutChanged_, OutSaved_, OutIsEdit_;
+
+    /// 总表头变量
+    // 总支出和总收入
+    double TotalOutcome_, TotalIncome_;
 };
 #endif // HFX_H
